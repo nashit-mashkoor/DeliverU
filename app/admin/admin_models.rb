@@ -5,8 +5,6 @@ ActiveAdmin.register AdminModel do
   #
   # Uncomment all parameters which should be permitted for assignment
   #
-  # permit_params :admin_id, :email, :password
-  #
   # or
   #
   # permit_params do
@@ -14,5 +12,7 @@ ActiveAdmin.register AdminModel do
   #   permitted << :other if params[:action] == 'create' && current_user.admin?
   #   permitted
   # end
-  
+
+  permit_params :admin_id, :email, :password
+
 end
