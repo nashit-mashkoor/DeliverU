@@ -1,0 +1,2 @@
+class AdminModel < ApplicationRecord
+end
