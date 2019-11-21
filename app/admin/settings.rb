@@ -1,6 +1,5 @@
 ActiveAdmin.register_page "Settings" do
   menu priority: 1
-  #menu.add label: "Change Password", url: "/"
   content do
     (link_to "Admin", '/admin/admin_users') + " " + (link_to "Customers", '/admin/customers') + " " + (link_to "Complaints", '/admin/complaints') + " " + (link_to "Drivers", '/admin/drivers') + " " + (link_to "Regions", '/admin/regions') + " " + (link_to "Orders", '/admin/orders') + " " + (link_to "Restaurants", '/admin/resturants') + " " + (link_to "Grocery", '/admin/grocerrystores')
   end
