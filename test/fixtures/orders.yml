@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  item_count: 1
+  order_message: MyString
+  timeslot: one
+  customer: one
+
+two:
+  item_count: 1
+  order_message: MyString
+  timeslot: two
+  customer: two

@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  email: MyString
+  dob: 2019-11-19
+  region: one
+
+two:
+  name: MyString
+  email: MyString
+  dob: 2019-11-19
+  region: two
