@@ -55,7 +55,6 @@ ActiveAdmin.register_page "Change Password" do
     current_admin_user.password = params[:new_password]
     current_admin_user.password_confirmation = params[:password_confirmation]
     current_admin_user.save!
-    flash[:notice] = 'Password updated successfully'
     redirect_to admin_dashboard_path
   end
 end
