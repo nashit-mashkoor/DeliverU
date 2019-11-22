@@ -1,3 +1,5 @@
 class Region < ApplicationRecord
-  has_one :driver 
+  has_one :driver
+  validates :name, presence: true
+
 end
