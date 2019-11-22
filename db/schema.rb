@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_20_022636) do
+ActiveRecord::Schema.define(version: 2019_11_22_095304) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,27 @@ ActiveRecord::Schema.define(version: 2019_11_20_022636) do
     t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id"
     t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
+  end
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
   create_table "admin_models", force: :cascade do |t|
@@ -67,6 +88,8 @@ ActiveRecord::Schema.define(version: 2019_11_20_022636) do
     t.bigint "region_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.decimal "customer_lat", precision: 10, scale: 6
+    t.decimal "customer_lang", precision: 10, scale: 6
     t.index ["region_id"], name: "index_customers_on_region_id"
   end
 
@@ -122,6 +145,10 @@ ActiveRecord::Schema.define(version: 2019_11_20_022636) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "driver_id", null: false
+    t.decimal "TlLat", precision: 10, scale: 6
+    t.decimal "TlLong", precision: 10, scale: 6
+    t.decimal "BrLat", precision: 10, scale: 6
+    t.string "BrLong"
     t.index ["driver_id"], name: "index_regions_on_driver_id"
   end
 
@@ -182,6 +209,7 @@ ActiveRecord::Schema.define(version: 2019_11_20_022636) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "complaints", "customers"
   add_foreign_key "complaints", "regions"
   add_foreign_key "customers", "regions"

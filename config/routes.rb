@@ -1,6 +1,15 @@
 Rails.application.routes.draw do
+  # For admin
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
+  # For authentication
   mount_devise_token_auth_for 'User', at: 'api/v1/auth'
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  
+  # API routes
+  namespace :api do
+    namespace :v1 do
+      
+    end
+   end
+
 end
