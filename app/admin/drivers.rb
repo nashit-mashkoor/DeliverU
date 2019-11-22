@@ -1,11 +1,12 @@
 ActiveAdmin.register Driver do
   menu false
+  permit_params :name, :dob, :email, :cnic, :region_id
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
   # Uncomment all parameters which should be permitted for assignment
   #
-  # permit_params :name, :dob, :email, :cnic, :region_id
+
   #
   # or
   #
