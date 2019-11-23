@@ -73,8 +73,8 @@ ActiveRecord::Schema.define(version: 2019_11_22_095304) do
   create_table "complaints", force: :cascade do |t|
     t.string "message"
     t.integer "status"
-    t.bigint "region_id", null: false
-    t.bigint "customer_id", null: false
+    t.bigint "region_id"
+    t.bigint "customer_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["customer_id"], name: "index_complaints_on_customer_id"
@@ -85,7 +85,7 @@ ActiveRecord::Schema.define(version: 2019_11_22_095304) do
     t.string "name"
     t.string "email"
     t.date "dob"
-    t.bigint "region_id", null: false
+    t.bigint "region_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.decimal "customer_lat", precision: 10, scale: 6
@@ -98,15 +98,15 @@ ActiveRecord::Schema.define(version: 2019_11_22_095304) do
     t.date "dob"
     t.string "email"
     t.string "cnic"
-    t.bigint "region_id", null: false
+    t.bigint "region_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["region_id"], name: "index_drivers_on_region_id"
   end
 
   create_table "grocerryitems", force: :cascade do |t|
-    t.bigint "order_id", null: false
-    t.bigint "grocerrystore_id", null: false
+    t.bigint "order_id"
+    t.bigint "grocerrystore_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["grocerrystore_id"], name: "index_grocerryitems_on_grocerrystore_id"
@@ -123,8 +123,8 @@ ActiveRecord::Schema.define(version: 2019_11_22_095304) do
   create_table "orders", force: :cascade do |t|
     t.integer "item_count"
     t.string "order_message"
-    t.bigint "timeslot_id", null: false
-    t.bigint "customer_id", null: false
+    t.bigint "timeslot_id"
+    t.bigint "customer_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["customer_id"], name: "index_orders_on_customer_id"
@@ -133,7 +133,7 @@ ActiveRecord::Schema.define(version: 2019_11_22_095304) do
 
   create_table "payables", force: :cascade do |t|
     t.integer "amount"
-    t.bigint "driver_id", null: false
+    t.bigint "driver_id"
     t.integer "type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -144,17 +144,17 @@ ActiveRecord::Schema.define(version: 2019_11_22_095304) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "driver_id", null: false
+    t.bigint "driver_id"
     t.decimal "TlLat", precision: 10, scale: 6
     t.decimal "TlLong", precision: 10, scale: 6
     t.decimal "BrLat", precision: 10, scale: 6
-    t.string "BrLong"
+    t.decimal "BrLong", precision: 10, scale: 6
     t.index ["driver_id"], name: "index_regions_on_driver_id"
   end
 
   create_table "resturantitems", force: :cascade do |t|
     t.string "description"
-    t.bigint "resturant_id", null: false
+    t.bigint "resturant_id"
     t.bigint "order_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -164,7 +164,7 @@ ActiveRecord::Schema.define(version: 2019_11_22_095304) do
 
   create_table "resturants", force: :cascade do |t|
     t.string "name"
-    t.bigint "region_id", null: false
+    t.bigint "region_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["region_id"], name: "index_resturants_on_region_id"
@@ -173,7 +173,7 @@ ActiveRecord::Schema.define(version: 2019_11_22_095304) do
   create_table "timeslots", force: :cascade do |t|
     t.time "start"
     t.time "end"
-    t.bigint "region_id", null: false
+    t.bigint "region_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["region_id"], name: "index_timeslots_on_region_id"
@@ -210,17 +210,5 @@ ActiveRecord::Schema.define(version: 2019_11_22_095304) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "complaints", "customers"
-  add_foreign_key "complaints", "regions"
-  add_foreign_key "customers", "regions"
-  add_foreign_key "drivers", "regions"
-  add_foreign_key "grocerryitems", "grocerrystores"
-  add_foreign_key "grocerryitems", "orders"
-  add_foreign_key "orders", "customers"
-  add_foreign_key "orders", "timeslots"
-  add_foreign_key "payables", "drivers"
   add_foreign_key "regions", "drivers"
-  add_foreign_key "resturantitems", "resturants"
-  add_foreign_key "resturants", "regions"
-  add_foreign_key "timeslots", "regions"
 end

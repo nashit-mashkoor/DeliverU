@@ -59,3 +59,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # project specific gem
 gem 'activeadmin', '~> 2.2'
+
+# For serlizers
+gem 'active_model_serializers', '~> 0.10.0'
