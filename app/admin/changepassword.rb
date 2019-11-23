@@ -8,7 +8,7 @@ ActiveAdmin.register_page "Change Password" do
           f.label "Current Password"
           f.input :current_password, type: :password, placeholder: 'Current Password', name: 'current_password'
         end
-        f.div  style: 'display: flex; align-items: center; justify-content: space-between' do
+        f.div style: 'display: flex; align-items: center; justify-content: space-between' do
           f.label "New Password"
           f.input :new_password, type: :password, label: 'New Password', placeholder: 'New Password', name: 'new_password'
         end
