@@ -1,5 +1,7 @@
 ActiveAdmin.register Complaint do
   menu false
+  permit_params :message, :status, :region_id, :customer_id
+  actions :index, :show, :update
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
