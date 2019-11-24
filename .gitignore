@@ -55,3 +55,10 @@ yarn-debug.log*
 .yarn-integrity
 .idea/*
 .idea
+
+#Macos
+.DS_Store
+
+# active storage
+/storage/*
+!/storage/.keep

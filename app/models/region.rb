@@ -15,4 +15,6 @@ class Region < ApplicationRecord
     end
     return region_id
   end
+  validates :name, presence: true
+
 end

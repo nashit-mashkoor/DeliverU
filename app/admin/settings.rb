@@ -1,13 +1,7 @@
 ActiveAdmin.register_page "Settings" do
+  menu priority: 1
   content do
-    #panel "Admin" do
-     # "Register New Admin"
-    #end
-    link_to('Admin','/admin/admin_users')
+    (link_to "Admin", '/admin/admin_users') + " " + (link_to "Customers", '/admin/customers') + " " + (link_to "Complaints", '/admin/complaints') + " " + (link_to "Drivers", '/admin/drivers') + " " + (link_to "Regions", '/admin/regions') + " " + (link_to "Orders", '/admin/orders') + " " + (link_to "Restaurants", '/admin/resturants') + " " + (link_to "Grocery", '/admin/grocerrystores')
   end
 
-
-  #sidebar "Test Sidebar" do
-    #"Hi World"
-  #end
 end
