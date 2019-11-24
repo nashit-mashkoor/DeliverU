@@ -1,6 +1,6 @@
 ActiveAdmin.register Resturant do
   menu false
-  permit_params :name, :region_id, :image
+  permit_params :name, :region_id, :menu_image
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
@@ -16,11 +16,21 @@ ActiveAdmin.register Resturant do
   #   permitted
   # end
 
+  show do
+    attributes_table do
+      row :region
+      row :name
+      row :menu_image do |resturant|
+        link_to(image_tag(url_for(resturant.menu_image), style: 'width: 150px; height: 150px; object-fit: cover;'), url_for(resturant.menu_image))
+      end
+    end
+  end
+
   form do |f|
     f.inputs "Please fill all fields" do
       f.input :region, required: true
       f.input :name, required: true
-      f.input :image, required: true, as: :file
+      f.input :menu_image, required: true, as: :file
     end
     f.actions
   end
