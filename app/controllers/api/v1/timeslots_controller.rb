@@ -51,6 +51,6 @@ class Api::V1::TimeslotsController < ApplicationController
   
     # Only allow a trusted parameter “white list” through.
     def timeslot_params
-       params.require(:timeslot).permit(:id, :start, :end, :region_id)
+       params.require(:timeslot).permit(:start, :end, :region_id)
     end
 end

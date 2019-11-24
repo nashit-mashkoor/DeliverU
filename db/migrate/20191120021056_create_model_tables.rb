@@ -17,7 +17,6 @@ class CreateModelTables < ActiveRecord::Migration[6.0]
 
     create_table :customers do |t|
       t.string :name, null: true
-      t.string :email, null: true
       t.date :dob, null: true
       t.references :region, null: true
 
