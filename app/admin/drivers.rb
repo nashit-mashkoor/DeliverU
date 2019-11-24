@@ -17,7 +17,7 @@ ActiveAdmin.register Driver do
   # end
 
   form do |f|
-    f.inputs "" do
+    f.inputs "Please fill all fields" do
       f.input :region, required: true
       f.input :name, required: true
       f.input :dob, start_year: 1900, required: true
