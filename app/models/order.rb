@@ -5,4 +5,6 @@ class Order < ApplicationRecord
 
   belongs_to :timeslot
   belongs_to :customer
+  has_many :grocerryitems
+  has_many :resturantitems
 end
