@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   # API routes
   namespace :api do
     namespace :v1 do
+      resources :drivers, only: [:show, :index]
       resources :customers do
         member do
           put 'update_location', to: 'customers#update_location', as: 'update_location' 
@@ -27,6 +28,7 @@ Rails.application.routes.draw do
           get 'customer_single_orders', to: 'orders#customer_single_orders', as: 'customer_single_orders' 
           get 'driver_recurring_orders', to: 'orders#driver_recurring_orders', as: 'driver_recurring_orders' 
           get 'driver_single_orders', to: 'orders#driver_single_orders', as: 'driver_single_orders' 
+          get 'driver_history', to: 'orders#driver_history', as: 'driver_history' 
         end
       
       end
