@@ -40,8 +40,8 @@ class CreateModelTables < ActiveRecord::Migration[6.0]
   
     create_table :resturantitems do |t|
       t.string :description, null: true
-      t.references :resturant, null: true
-      t.references :order, null: true
+      t.references :resturant, null: false
+      t.references :order, null: false
 
       t.timestamps
     end
@@ -53,8 +53,8 @@ class CreateModelTables < ActiveRecord::Migration[6.0]
     end
   
     create_table :grocerryitems do |t|
-      t.references :order, null: true
-      t.references :grocerrystore, null: true
+      t.references :order, null: false
+      t.references :grocerrystore, null: false
 
       t.timestamps
     end

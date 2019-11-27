@@ -1,7 +1,7 @@
 class Api::V1::CustomersController < Api::V1::ApiBaseController
     include ApplicationHelper
     before_action :set_customer, only: [:show, :update, :destroy, :update_location]
-    before_action :authenticate_customer!, only: [:show, :update, :destory, :update_location]
+    #before_action :authenticate_customer!, only: [:show, :update, :destory, :update_location]
 
 
     # GET /customers
@@ -57,7 +57,6 @@ class Api::V1::CustomersController < Api::V1::ApiBaseController
     private
     # Use callbacks to share common setup or constraints between actions.
     def set_customer
-        byebug
         if current_user.customer_id == params[:id].to_i
             @customer = Customer.find(params[:id])
         else
