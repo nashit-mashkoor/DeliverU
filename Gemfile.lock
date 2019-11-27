@@ -97,6 +97,7 @@ GEM
       xpath (~> 3.2)
     case_transform (0.2)
       activesupport
+    chartkick (3.3.0)
     childprocess (3.0.0)
     concurrent-ruby (1.1.5)
     crass (1.0.5)
@@ -293,6 +294,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   capybara (>= 2.15)
+  chartkick (~> 3.3)
   devise (~> 4.7, >= 4.7.1)
   devise_token_auth
   geokit
