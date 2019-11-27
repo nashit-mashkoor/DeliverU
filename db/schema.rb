@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_23_184618) do
+ActiveRecord::Schema.define(version: 2019_11_27_162452) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,6 +108,7 @@ ActiveRecord::Schema.define(version: 2019_11_23_184618) do
     t.bigint "grocerrystore_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "quantity"
     t.index ["grocerrystore_id"], name: "index_grocerryitems_on_grocerrystore_id"
     t.index ["order_id"], name: "index_grocerryitems_on_order_id"
   end
@@ -126,6 +127,10 @@ ActiveRecord::Schema.define(version: 2019_11_23_184618) do
     t.bigint "customer_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "category", default: 0
+    t.integer "status", default: 0
+    t.integer "created_by", default: 0
+    t.string "place_date"
     t.index ["customer_id"], name: "index_orders_on_customer_id"
     t.index ["timeslot_id"], name: "index_orders_on_timeslot_id"
   end
@@ -143,12 +148,10 @@ ActiveRecord::Schema.define(version: 2019_11_23_184618) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "driver_id"
     t.decimal "TlLat", precision: 10, scale: 6
     t.decimal "TlLong", precision: 10, scale: 6
     t.decimal "BrLat", precision: 10, scale: 6
     t.decimal "BrLong", precision: 10, scale: 6
-    t.index ["driver_id"], name: "index_regions_on_driver_id"
   end
 
   create_table "resturantitems", force: :cascade do |t|
@@ -170,8 +173,8 @@ ActiveRecord::Schema.define(version: 2019_11_23_184618) do
   end
 
   create_table "timeslots", force: :cascade do |t|
-    t.time "start"
-    t.time "end"
+    t.string "start"
+    t.string "end"
     t.bigint "region_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -213,5 +216,4 @@ ActiveRecord::Schema.define(version: 2019_11_23_184618) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "regions", "drivers"
 end
