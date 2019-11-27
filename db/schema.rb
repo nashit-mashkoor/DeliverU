@@ -104,8 +104,8 @@ ActiveRecord::Schema.define(version: 2019_11_27_162452) do
   end
 
   create_table "grocerryitems", force: :cascade do |t|
-    t.bigint "order_id"
-    t.bigint "grocerrystore_id"
+    t.bigint "order_id", null: false
+    t.bigint "grocerrystore_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "quantity"
@@ -138,10 +138,12 @@ ActiveRecord::Schema.define(version: 2019_11_27_162452) do
   create_table "payables", force: :cascade do |t|
     t.integer "amount"
     t.bigint "driver_id"
-    t.integer "type"
+    t.integer "category", default: 0
+    t.bigint "order_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["driver_id"], name: "index_payables_on_driver_id"
+    t.index ["order_id"], name: "index_payables_on_order_id"
   end
 
   create_table "regions", force: :cascade do |t|
@@ -156,8 +158,8 @@ ActiveRecord::Schema.define(version: 2019_11_27_162452) do
 
   create_table "resturantitems", force: :cascade do |t|
     t.string "description"
-    t.bigint "resturant_id"
-    t.bigint "order_id"
+    t.bigint "resturant_id", null: false
+    t.bigint "order_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["order_id"], name: "index_resturantitems_on_order_id"
