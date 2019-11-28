@@ -10,7 +10,7 @@ ActiveAdmin.register Region do
       #   link_to(image_tag(url_for(driver.driver_license), style: 'width: 150px; height: 150px; object-fit: cover;'), url_for(driver.driver_license))
       # end
       row :analytics do
-        column_chart Order.joins(:timeslot).group(:region_id).count
+        column_chart resource.get_all_orders.count()
       end
     end
   end
