@@ -1,4 +1,5 @@
 class OrderSerializer < ActiveModel::Serializer
+  include Rails.application.routes.url_helpers
   attributes :id, :item_count, :order_message, :place_date, :category, :status, :created_by, :proof_of_payment
 
   belongs_to :timeslot

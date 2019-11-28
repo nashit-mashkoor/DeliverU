@@ -1,5 +1,5 @@
 class Api::V1::ResturantsController < ApplicationController
-    
+
     # GET /resturants
     # For both customer and driver
     def index

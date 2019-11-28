@@ -1,6 +1,4 @@
 class Api::V1::GrocerrystoresController < ApplicationController
-    
-    
     # GET /grocerrystores
     # For both customer and controller
     def index
