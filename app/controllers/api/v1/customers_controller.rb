@@ -39,7 +39,7 @@ class Api::V1::CustomersController < Api::V1::ApiBaseController
   
     # DELETE /customers/1
     def destroy
-        @customer.destroy
+        @customer.destroy(current_user.customer_id)
     end
     
     #PATCH/PUT update customer location

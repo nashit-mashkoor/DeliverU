@@ -35,6 +35,7 @@ Rails.application.routes.draw do
       end
       resources :grocerrystores, only: [:index]
       resources :resturants, only: [:index]
+      resources :complaints, only: [:show, :index, :create, :update, :destroy]
     end
   end
 

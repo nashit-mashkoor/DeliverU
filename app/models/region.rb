@@ -3,7 +3,7 @@ class Region < ApplicationRecord
   has_many :customers, dependent: :nullify
   has_many :resturants, dependent: :nullify
   has_many :timeslots, dependent: :nullify
-
+  has_many :complaints, dependent: :nullify
   def self.get_customer_region lat, lang
     region_id = nil
     Region.all.each do |r|

@@ -121,7 +121,6 @@ class Api::V1::OrdersController < Api::V1::ApiBaseController
   # put/order/1
   # Mark a order as complete by driver
   def mark_order_complete
-    byebug
     order_params = (driver_order_params)
     order_params[:payable_attributes][:driver_id] = current_user.customer_id
     if @order.single?
