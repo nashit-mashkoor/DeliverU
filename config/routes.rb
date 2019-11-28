@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       resources :orders, only: [:index, :show, :create, :update]  do
         member do
           put 'cancel', to: 'orders#cancel', as:  'cancel'
+          put 'mark_order_complete', to: 'orders#mark_order_complete', as: 'mark_order_complete'
         end
         collection do
           get 'customer_recurring_orders', to: 'orders#customer_recurring_orders', as: 'customer_recurring_orders' 
@@ -32,6 +33,8 @@ Rails.application.routes.draw do
         end
       
       end
+      resources :grocerrystores, only: [:index]
+      resources :resturants, only: [:index]
     end
   end
 

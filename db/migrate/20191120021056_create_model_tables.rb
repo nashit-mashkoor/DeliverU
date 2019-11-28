@@ -70,9 +70,10 @@ class CreateModelTables < ActiveRecord::Migration[6.0]
     end
   
     create_table :payables do |t|
-      t.integer :amount
+      t.integer :amount, null: true
       t.references :driver, null: true
-      t.integer :type
+      t.integer :category, default: 0
+      t.references :order, null: true
   
       t.timestamps
     end
