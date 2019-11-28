@@ -1,5 +1,5 @@
 class TimeslotSerializer < ActiveModel::Serializer
-  attributes :id, :start, :end
+  attributes :id, :start
 
   belongs_to :region
 end

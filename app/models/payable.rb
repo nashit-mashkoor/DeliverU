@@ -1,6 +1,7 @@
 class Payable < ApplicationRecord
-  enum type: [:to_pay, :to_recieve]
+  enum category: [:to_pay, :to_recieve]
   belongs_to :driver
+  belongs_to :order, optional: true
   self.inheritance_column = nil
 
   def color

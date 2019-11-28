@@ -6,12 +6,20 @@ class Order < ApplicationRecord
   belongs_to :timeslot
   belongs_to :customer
 
+  has_one :payable
+
   has_many :grocerryitems, dependent: :destroy
   has_many :resturantitems, dependent: :destroy
+ 
 
   has_many :grocerrystores, through:  :grocerryitems
   has_many :resturants, through: :resturantitems
 
+  has_one_attached :proof_of_payment
+
+  accepts_nested_attributes_for :resturantitems
+  accepts_nested_attributes_for :grocerryitems
+  accepts_nested_attributes_for :payable
 
   public
 
