@@ -60,6 +60,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # project specific gem
 gem 'activeadmin', '~> 2.2'
 gem  "geokit"
+gem 'chartkick', '~> 3.3'
 
 # For serlizers
 gem 'active_model_serializers', '~> 0.10.0'

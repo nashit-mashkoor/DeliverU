@@ -53,6 +53,10 @@ ActiveAdmin.register_page "Settings" do
         end
       end
       column do
+        a href: '/admin/timeslots', style: 'text-decoration: none; width: 110px;display:block;' do 
+          h3 "Timeslots", style: 'margin-bottom: 5px;'
+          para "Manage Timeslots Records"
+        end
       end
       column do
       end
