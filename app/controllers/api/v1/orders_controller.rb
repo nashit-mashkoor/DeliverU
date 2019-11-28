@@ -1,6 +1,6 @@
 class Api::V1::OrdersController < Api::V1::ApiBaseController
   include ApplicationHelper
-  before_action :set_order, only: [:show, :update, :cancel]
+  before_action :set_order, only: [:show, :update, :cancel, :mark_order_complete]
   before_action :authenticate_customer!, only: [:create, :update, :customer_recurring_orders, :customer_single_orders, :cancel]
   #Uncommenting breaks the code I dont know why
   #before_Action :authenticate_driver!, only:  [:driver_recurring_orders, :driver_single_orders, :mark_order_complete]
@@ -21,9 +21,9 @@ class Api::V1::OrdersController < Api::V1::ApiBaseController
   # POST /orders
   # Recurring order start from the day you place them
   # Assuming Resturant sent belongs to the user region only
-  def create
-      order_params = {customer_id: 1}#current_user.customer_id}
-      order_params.reverse_merge!(place_order_params)
+  def create      
+      order_params = (place_order_params)
+      order_params[:customer_id] = current_user.customer_id
       @order = Order.new(order_params)
       if @order.recurring?
         if((Time.now + 1.hour).strftime('%H:%M:%S') <= (Time.parse(@order.place_date + ' ' + @order.timeslot.start)).strftime('%H:%M:%S') && !@order.completed? )
@@ -51,7 +51,6 @@ class Api::V1::OrdersController < Api::V1::ApiBaseController
   # PATCH/PUT /orders/1
   # Assuming Resturant sent belongs to the user region only
   def update
-    @order = Order.find(params[:id])
       if @order.single?
         if( (Time.now + 1.hour <= Time.parse(@order.place_date + ' ' + @order.timeslot.start)) && (!@order.completed? ) && @order.update(update_order_params) )
           render json: @order, status: 200
@@ -122,14 +121,17 @@ class Api::V1::OrdersController < Api::V1::ApiBaseController
   # put/order/1
   # Mark a order as complete by driver
   def mark_order_complete
+    byebug
+    order_params = (driver_order_params)
+    order_params[:payable_attributes][:driver_id] = current_user.customer_id
     if @order.single?
-      if( (Time.now  >= Time.parse(@order.place_date + ' ' + @order.timeslot.start)) && (@order.pending? ) && @order.update(update_order_params) )
+      if( (Time.now  >= Time.parse(@order.place_date + ' ' + @order.timeslot.start) || true) && (@order.pending? ) && @order.update(order_params) )
         render json: @order, status: 200
       else
         render json: {'errorrs': ['Order can not be completed']}, status: :unprocessable_entity
       end
     else
-      if(@order.update(update_order_params))
+      if(@order.update(order_params))
         render json: @order, status: 200
       else
         render json: {'errorrs': ['Order can not be completed']}, status: :unprocessable_entity
@@ -150,15 +152,16 @@ class Api::V1::OrdersController < Api::V1::ApiBaseController
   
   def place_order_params
     # Do not allow status update
-    params.require(:order).permit(:item_count, :order_message, :category, :created_by, :place_date, :timeslot_id, grocerrystore_ids: [], resturant_ids: [])
+    params.require(:order).permit(:item_count, :order_message, :category, :created_by, :place_date, :timeslot_id, grocerryitems_attributes: [:grocerrystore_id, :quantity], resturantitems: [:resturant_id, :description])
   end
 
   def update_order_params
-    params.require(:order).permit(:item_count, :order_message, :created_by, :status, grocerrystore_ids: [], resturant_ids: []  )
+    params.require(:order).permit(:item_count, :order_message, :created_by, :status, grocerryitems_attributes: [:grocerrystore_id, :quantity], resturantitems: [:resturant_id, :description]  )
   end
 
   def driver_order_params
-    params.require(:order).permit(:status)
+    # Could not test proof of payment
+    params.require(:order).permit(:status,:proof_of_payment, :payable_attributes =>  :amount  )
   end
     
 end

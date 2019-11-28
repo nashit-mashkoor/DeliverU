@@ -37,9 +37,14 @@ class Api::V1::TimeslotsController < ApplicationController
     end
 
     # Non Resourcefull actions
-
+    # Gets availble slots for a region
+    # Used by both driver and customer
     def region_slots
-        @timeslots = Timeslot.where("region_id = ?", params[:region_id])
+        if(current_user.customer_id?)
+            @timeslots = Timeslot.where("region_id = ?", current_user.customer.region_id)
+        else
+            @timeslots = Timeslot.where("region_id = ?", current_user.driver.region_id)
+        end
         render json: @timeslot, status: 200
     end
   
