@@ -16,9 +16,6 @@ class Region < ApplicationRecord
     return region_id
   end
 
-  def get_all_orders
-    Order.where(timeslot_id: self.timeslots)
-  end
   validates :name, presence: true
 
 end
