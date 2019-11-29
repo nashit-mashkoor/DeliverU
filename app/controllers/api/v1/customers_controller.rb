@@ -1,7 +1,9 @@
 class Api::V1::CustomersController < Api::V1::ApiBaseController
     include ApplicationHelper
+    
+    before_action :authenticate_customer!, only: [:show, :update, :destory, :update_location, :region_driver]
     before_action :set_customer, only: [:show, :update, :destroy, :update_location]
-    before_action :authenticate_customer!, only: [:show, :update, :destory, :update_location]
+ 
 
 
     # GET /customers
@@ -19,10 +21,13 @@ class Api::V1::CustomersController < Api::V1::ApiBaseController
     def create
         @customer = Customer.new(customer_params)
         @customer_user_id = current_user 
-        current_user.customer_id = @customer
-         
-        if @customer.save! && current_user.save!
-            render json: @customer, status: :created, location: api_v1_customer_url(@customer)
+        if  @customer.save 
+            current_user.customer_id = @customer.id
+            if current_user.save
+                render json: @customer, status: :created, location: api_v1_customer_url(@customer)
+            else
+                render json: @customer.errors, status: :unprocessable_entity
+            end
         else
             render json: @customer.errors, status: :unprocessable_entity
         end
@@ -52,7 +57,17 @@ class Api::V1::CustomersController < Api::V1::ApiBaseController
             render json: {errors: ['Region not found']}, status: 401 
         end
     end
+
+    # Customer /region_driver | Gets the region driver 
+    def region_driver
+        @drivers = Driver.where(region_id: current_user.customer.region_id)[0]
+        if @drivers.nil?
+            render json: {Data:{} }, status: 200
+        else
+            render json: @drivers, status: 200
+        end
         
+    end
 
     private
     # Use callbacks to share common setup or constraints between actions.

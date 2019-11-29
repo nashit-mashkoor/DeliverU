@@ -1,5 +1,5 @@
 class Payable < ApplicationRecord
-  enum category: [:to_pay, :to_recieve]
+  enum category: {to_pay: 0, to_recieve: 1}
   belongs_to :driver
   belongs_to :order, optional: true
   self.inheritance_column = nil
