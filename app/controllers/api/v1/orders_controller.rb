@@ -1,9 +1,10 @@
 class Api::V1::OrdersController < Api::V1::ApiBaseController
   include ApplicationHelper
-  before_action :set_order, only: [:show, :update, :cancel, :mark_order_complete]
+  #Uncomment this and the code breaks
+  before_action :authenticate_driver!, only:  [:driver_recurring_orders, :driver_single_orders, :mark_order_complete]
   before_action :authenticate_customer!, only: [:create, :update, :customer_recurring_orders, :customer_single_orders, :cancel]
-  #Uncommenting breaks the code I dont know why
-  #before_Action :authenticate_driver!, only:  [:driver_recurring_orders, :driver_single_orders, :mark_order_complete]
+  before_action :set_order, only: [:show, :update, :cancel, :mark_order_complete]
+
 
   #For testing
   # GET /orders
@@ -121,7 +122,6 @@ class Api::V1::OrdersController < Api::V1::ApiBaseController
   # put/order/1
   # Mark a order as complete by driver
   def mark_order_complete
-    byebug
     order_params = (driver_order_params)
     order_params[:payable_attributes][:driver_id] = current_user.customer_id
     if @order.single?

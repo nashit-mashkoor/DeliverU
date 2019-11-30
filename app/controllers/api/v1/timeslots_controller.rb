@@ -1,4 +1,5 @@
-class Api::V1::TimeslotsController < ApplicationController
+class Api::V1::TimeslotsController < Api::V1::ApiBaseController
+
     before_action :set_timeslot, only: [:show, :update, :destroy]
     
     # GET /timeslots
@@ -33,7 +34,7 @@ class Api::V1::TimeslotsController < ApplicationController
   
     # DELETE /timeslots/1
     def destroy
-        @timeslot.destroy
+        @timeslot.destroy(params[:id])
     end
 
     # Non Resourcefull actions

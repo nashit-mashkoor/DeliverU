@@ -1,9 +1,8 @@
-class Api::V1::ResturantsController < ApplicationController
+class Api::V1::ResturantsController < Api::V1::ApiBaseController
 
     # GET /resturants
     # For both customer and driver
     def index
-        @resturants = Resturant.where("region_id = ?", 1)
         if(current_user.customer_id?)
            @resturants = Resturant.where("region_id = ?", current_user.customer.region_id)
         else

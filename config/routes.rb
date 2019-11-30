@@ -8,10 +8,18 @@ Rails.application.routes.draw do
   # API routes
   namespace :api do
     namespace :v1 do
-      resources :drivers, only: [:show, :index]
+      resources :drivers, only: [:show, :index] do
+        collection do
+          get 'driver_payables', to: 'drivers#driver_payables', as: 'driver_payables' 
+          get 'payable_amount', to: 'drivers#payable_amount', as: 'payable_amount' 
+        end
+      end
       resources :customers do
         member do
-          put 'update_location', to: 'customers#update_location', as: 'update_location' 
+          put 'update_location', to: 'customers#update_location', as: 'update_location'  
+        end
+        collection do
+          get 'region_driver', to: 'customers#region_driver', as: 'region_driver'
         end
       end
       resources :timeslots do
@@ -35,6 +43,7 @@ Rails.application.routes.draw do
       end
       resources :grocerrystores, only: [:index]
       resources :resturants, only: [:index]
+      resources :complaints, only: [:show, :index, :create, :update, :destroy]
     end
   end
 
