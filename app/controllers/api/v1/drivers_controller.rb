@@ -1,7 +1,7 @@
 class Api::V1::DriversController < Api::V1::ApiBaseController
     include ApplicationHelper
 
-    before_action :authenticate_driver!, only: [:show, :index, :driver_payables, :payable_amount]
+    before_action :authenticate_user!, :authenticate_driver!, only: [:show, :index, :driver_payables, :payable_amount]
     before_action :set_driver, only: [:show]
     
 

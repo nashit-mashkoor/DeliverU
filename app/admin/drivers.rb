@@ -17,7 +17,7 @@ ActiveAdmin.register Driver do
     panel "Payables", only: [:show] do
       table_for driver.payables do
         column :amount
-        column :type do |payable|
+        column :category do |payable|
           span payable.typeString, class: payable.color
         end
         column :actions do |payable|

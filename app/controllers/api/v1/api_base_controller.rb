@@ -1,4 +1,4 @@
-class Api::V1::ApiBaseController < ApplicationController
+class Api::V1::ApiBaseController < ApiController
     before_action :authenticate_user!
     before_action   :set_default_format
     around_action   :handle_exceptions

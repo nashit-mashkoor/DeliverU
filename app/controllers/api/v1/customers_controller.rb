@@ -1,7 +1,7 @@
 class Api::V1::CustomersController < Api::V1::ApiBaseController
     include ApplicationHelper
     
-    before_action :authenticate_customer!, only: [:show, :update, :destory, :update_location, :region_driver]
+    before_action :authenticate_user!, :authenticate_customer!, only: [:show, :update, :destory, :update_location, :region_driver]
     before_action :set_customer, only: [:show, :update, :destroy, :update_location]
  
 

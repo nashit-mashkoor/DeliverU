@@ -1,6 +1,7 @@
 class Api::V1::ComplaintsController < Api::V1::ApiBaseController
+
     include ApplicationHelper
-    before_action :authenticate_customer!, only: [:index, :show, :update, :destory, :create]
+    before_action :authenticate_user!, :authenticate_customer!, only: [:index, :show, :update, :destory, :create]
     before_action :set_complaint, only: [:show, :update]
    
 

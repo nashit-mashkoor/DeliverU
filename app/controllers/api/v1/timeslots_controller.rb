@@ -1,6 +1,6 @@
 class Api::V1::TimeslotsController < Api::V1::ApiBaseController
 
-    before_action :set_timeslot, only: [:show, :update, :destroy]
+    before_action :authenticate_user!, :set_timeslot, only: [:show, :update, :destroy]
     
     # GET /timeslots
     def index

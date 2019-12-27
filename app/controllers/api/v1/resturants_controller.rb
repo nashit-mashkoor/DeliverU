@@ -1,5 +1,5 @@
 class Api::V1::ResturantsController < Api::V1::ApiBaseController
-
+    before_action :authenticate_user!
     # GET /resturants
     # For both customer and driver
     def index

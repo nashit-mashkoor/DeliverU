@@ -1,8 +1,8 @@
 class Api::V1::OrdersController < Api::V1::ApiBaseController
   include ApplicationHelper
   #Uncomment this and the code breaks
-  before_action :authenticate_driver!, only:  [:driver_recurring_orders, :driver_single_orders, :mark_order_complete]
-  before_action :authenticate_customer!, only: [:create, :update, :customer_recurring_orders, :customer_single_orders, :cancel]
+  before_action :authenticate_user!, :authenticate_driver!, only:  [:driver_recurring_orders, :driver_single_orders, :mark_order_complete]
+  before_action :authenticate_user!, :authenticate_customer!, only: [:create, :update, :customer_recurring_orders, :customer_single_orders, :cancel]
   before_action :set_order, only: [:show, :update, :cancel, :mark_order_complete]
 
 

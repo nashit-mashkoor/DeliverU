@@ -5,10 +5,10 @@ class Payable < ApplicationRecord
   self.inheritance_column = nil
 
   def color
-    self.type == 'to_recieve' ? 'blue' : 'red'
+    self.category == 'to_recieve' ? 'blue' : 'red'
   end
   
   def typeString
-    self.type == 'to_recieve' ? 'Recieval' : 'Payable'
+    self.category == 'to_recieve' ? 'Recieval' : 'Payable'
   end
 end
