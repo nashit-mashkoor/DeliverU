@@ -1864,7 +1864,6 @@ Region "1" --> "0..*" TimeSlots : has
 ```mermaid
 
 **5.2 DFD Diagram**
-```mermaid
 graph TD
     %% Entities
     Admin[Admin]
@@ -1889,7 +1888,7 @@ graph TD
     style Admin fill:#5499C7,color:#fff
     style Customer fill:#5499C7,color:#fff
     style Driver fill:#5499C7,color:#fff
-```mermaid
+
 **5.3  ER Diagram**
 
 **5.4 Use Case Diagram**
