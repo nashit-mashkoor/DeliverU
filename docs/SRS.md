@@ -1724,19 +1724,19 @@ The application shall intimate the user the following disclaimers before the use
 
 **6. Architecture Diagrams:**  
 **5.1 Analysis Class Diagrams:**
-![Class Diagram](docs/imgs/class-diagram.png)
+![Class Diagram](imgs/class-diagram.png)
 
 **5.2 DFD Diagram**
 
-![DFD Diagram](docs/imgs/dfd-diagram.png)
+![DFD Diagram](imgs/dfd-diagram.png)
 
 **5.3  ER Diagram**
 
-![ER Diagram](docs/imgs/er-diagram.png)
+![ER Diagram](imgs/er-diagram.png)
 
 **5.4 Use Case Diagram**
 
-![Use Case Diagram](docs/imgs/use-case-diagram.png)
+![Use Case Diagram](imgs/use-case-diagram.png)
 
 **7. Screenshots:**
 
