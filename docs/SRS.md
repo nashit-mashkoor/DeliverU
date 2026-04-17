@@ -1724,176 +1724,21 @@ The application shall intimate the user the following disclaimers before the use
 
 **6. Architecture Diagrams:**  
 **5.1 Analysis Class Diagrams:**
-```mermaid
-classDiagram
-
-class Order {
-  Date
-  IsRecurring
-  Status
-  isEditable()
-  getEstimate()
-  getDetails()
-  markComplete()
-  update()
-  cancel()
-  getInfo()
-}
-
-class TimeSlots {
-  StartTime
-  EndTime
-  getOrders()
-  placeOrder()
-  updateInfo()
-}
-
-class Restaurant {
-  Name
-  Location
-  MenuPicture
-  getInfo()
-  updateInfo()
-}
-
-class RestaurantItem {
-  OrderDescription
-}
-
-class OrderItem {
-  getEstimateCost()
-}
-
-class GroceryItem {
-  Name
-  Picture
-  Count
-  EstimateCost
-  updateInfo()
-}
-
-class Admin {
-  Email
-  Password
-  addDriverPayable()
-  getTopRegions()
-}
-
-class Driver {
-  Name
-  DOB
-  Email
-  Password
-  ProfilePicture
-  CNIC
-  DriverLicense
-  addPayable()
-  getPayables()
-  changePassword()
-  login()
-  updateInfo()
-  getInfo()
-  calculateTotalDue()
-}
-
-class PaymentRecord {
-  Amount
-  IsPayable
-  Date
-  getInfo()
-}
-
-class Region {
-  Name
-  TopLeftCoord
-  BottomRightCoord
-  getUpcomingSlots()
-  updateInfo()
-  setDriver()
-  addSlot()
-  removeSlot()
-  getUpcomingOrders()
-  getTopSlots()
-}
-
-class Customer {
-  Name
-  DOB
-  Email
-  Password
-  Location
-  ProfilePicture
-  login()
-  signUp()
-  getComplaints()
-  addComplaint()
-  getProfile()
-  updateProfile()
-  getOrders()
-}
-
-class Complaint {
-  Message
-  Status
-  Date
-  getDetails()
-  updateStatus()
-}
-
-%% Relationships
-Order "1" --> "0..*" TimeSlots : has
-Order "1" --> "*" OrderItem : has
-
-Restaurant "1" --> "*" RestaurantItem : has
-OrderItem <|-- RestaurantItem
-OrderItem <|-- GroceryItem
-
-Admin --> Restaurant : manages
-Admin --> GroceryItem : manages
-Admin --> Region : manages
-Admin --> Complaint : manages
-
-Driver "1" --> "*" PaymentRecord : has
-Driver --> Region : assignedTo
-
-Customer "1" --> "*" Complaint : has
-Customer --> Region : resides in
-Customer "1" --> "0..*" Order : has
-
-Region "1" --> "0..*" TimeSlots : has
-```mermaid
+![Class Diagram](docs/imgs/class-diagram.png)
 
 **5.2 DFD Diagram**
-graph TD
-    %% Entities
-    Admin[Admin]
-    Customer[Customer]
-    Driver[Driver]
-    DMS((Delivery Management System))
 
-    %% Admin Flows
-    Admin -- "Admin data, Customer id, Complaint data, Driver Data, Region Data, Slot Data, Order id, Restaurant Data, Grocery item, Payable Data" --> DMS
-    DMS -- "Error message, Success message, List of Complaints, Complaint data, Driver data, Region data, Slot data, Order Data, Region frequency, Slot Frequency, Restaurant Data, Grocery Data, Payable Data" --> Admin
-
-    %% Customer Flows
-    Customer -- "Customer Data, Order data, Complaint" --> DMS
-    DMS -- "Success Message, Error Message, Customer data, List of orders, Estimated Cost" --> Customer
-
-    %% Driver Flows
-    Driver -- "Driver Data, Order id, Proof Images, Total Amount" --> DMS
-    DMS -- "Success Message, Error Message, List of Payables, List of slots, List of orders" --> Driver
-
-    %% Styling
-    style DMS fill:#5499C7,color:#fff,stroke:#333,stroke-width:2px
-    style Admin fill:#5499C7,color:#fff
-    style Customer fill:#5499C7,color:#fff
-    style Driver fill:#5499C7,color:#fff
+![DFD Diagram](docs/imgs/dfd-diagram.png)
 
 **5.3  ER Diagram**
 
+![ER Diagram](docs/imgs/er-diagram.png)
+
 **5.4 Use Case Diagram**
 
-**7\. Screenshots:**
+![Use Case Diagram](docs/imgs/use-case-diagram.png)
+
+**7. Screenshots:**
 
 **Appendix A: Glossary**
 
