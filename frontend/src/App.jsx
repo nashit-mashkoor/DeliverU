@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './context/AuthContext'
 import Layout from './components/Layout'
+import Landing from './pages/Landing'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
@@ -47,6 +48,7 @@ function App() {
     <>
       <div className="bg-pattern" />
       <Routes>
+        <Route path="/" element={<Landing />} />
         <Route path="/login" element={
           <PublicRoute>
             <Login />
@@ -57,12 +59,12 @@ function App() {
             <Register />
           </PublicRoute>
         } />
-        <Route path="/" element={
+        <Route path="/app" element={
           <ProtectedRoute>
             <Layout />
           </ProtectedRoute>
         }>
-          <Route index element={<Navigate to="/dashboard" replace />} />
+          <Route index element={<Navigate to="/app/dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="items" element={<Items />} />
         </Route>
@@ -73,4 +75,3 @@ function App() {
 }
 
 export default App
-

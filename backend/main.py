@@ -11,8 +11,6 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
 from backend.constants import API_PASSWORD, API_USER, FRONTEND_URL, PRODUCTION
-from backend.modules.auth.auth_controller import auth_router
-from backend.modules.items.item_controller import item_router
 from backend.redis_engine import redis_close, redis_ping
 from backend.utils.logging import Logging
 from backend.utils.middlewares import LogRequestsMiddleware
@@ -154,9 +152,12 @@ if PRODUCTION:
 # Add request logging middleware
 app.add_middleware(LogRequestsMiddleware)
 
-# Include routers
-app.include_router(auth_router)
-app.include_router(item_router)
+@app.api_route("/api/v1/{path:path}", methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], include_in_schema=False)
+async def api_placeholder(path: str) -> JSONResponse:
+    return JSONResponse(
+        status_code=status.HTTP_501_NOT_IMPLEMENTED,
+        content={"detail": "API placeholder. Endpoints are currently disabled."},
+    )
 
 
 @app.exception_handler(Exception)
