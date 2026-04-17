@@ -1863,9 +1863,36 @@ Customer "1" --> "0..*" Order : has
 Region "1" --> "0..*" TimeSlots : has
 ```mermaid
 
-**5.2  ER Diagram**
+**5.2 DFD Diagram**
+```mermaid
+graph TD
+    %% Entities
+    Admin[Admin]
+    Customer[Customer]
+    Driver[Driver]
+    DMS((Delivery Management System))
 
-**5.3 Use Case Diagram**
+    %% Admin Flows
+    Admin -- "Admin data, Customer id, Complaint data, Driver Data, Region Data, Slot Data, Order id, Restaurant Data, Grocery item, Payable Data" --> DMS
+    DMS -- "Error message, Success message, List of Complaints, Complaint data, Driver data, Region data, Slot data, Order Data, Region frequency, Slot Frequency, Restaurant Data, Grocery Data, Payable Data" --> Admin
+
+    %% Customer Flows
+    Customer -- "Customer Data, Order data, Complaint" --> DMS
+    DMS -- "Success Message, Error Message, Customer data, List of orders, Estimated Cost" --> Customer
+
+    %% Driver Flows
+    Driver -- "Driver Data, Order id, Proof Images, Total Amount" --> DMS
+    DMS -- "Success Message, Error Message, List of Payables, List of slots, List of orders" --> Driver
+
+    %% Styling
+    style DMS fill:#5499C7,color:#fff,stroke:#333,stroke-width:2px
+    style Admin fill:#5499C7,color:#fff
+    style Customer fill:#5499C7,color:#fff
+    style Driver fill:#5499C7,color:#fff
+```mermaid
+**5.3  ER Diagram**
+
+**5.4 Use Case Diagram**
 
 **7\. Screenshots:**
 
