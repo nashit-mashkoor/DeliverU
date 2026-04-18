@@ -7,7 +7,7 @@ This document defines the visual system for the DeliverU landing page. It is a t
 - Tone: nocturnal, signal-driven, precise, kinetic
 - Visual metaphor: networked routes, glowing nodes, shared loops, ambient data flow
 - Differentiator: the "route ribbon" motif threading through sections to unify the narrative
-- Ambient layers: scanlines and orbit rings add kinetic depth without clutter
+- Ambient layers: minimal, one primary motif only (route ribbon)
 
 ## Typography System
 
@@ -48,7 +48,7 @@ Color rules:
 Motion communicates signal flow and momentum, not playful bounce.
 
 - Page-load: staggered fade-up reveals for sections
-- Ambient: slow drift on the route ribbon, subtle scanline shift, orbit ring rotation
+- Ambient: slow drift on the route ribbon only
 - Micro: CTA hover lift, card hover lift, glow intensifies on hover
 
 Accessibility:
@@ -71,7 +71,7 @@ Buttons:
 
 Cards:
 - Dark translucent surfaces with thin cyan outlines
-- Optional dashed borders for data chips and signal cards
+- Minimal accents; avoid dashed borders to reduce visual noise
 - Subtle glow or shadow for depth
 
 Chips / Badges:
@@ -79,12 +79,12 @@ Chips / Badges:
 - Low-saturation background with cyan border
 
 Route Ribbon:
-- Wide diagonal band with gradient shift and 3-4 glowing nodes
+- Wide diagonal band with restrained gradient shift and 3-4 glowing nodes
 - Slow drift animation to suggest flow
 
 Section Labels:
-- Uppercase micro-labels that sit above sections
-- Include a glowing dot marker to reinforce the signal motif
+- Uppercase micro-labels that sit above section content
+- Include a subtle dot marker to reinforce the signal motif
 
 ## Do / Don’t
 

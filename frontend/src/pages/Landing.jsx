@@ -6,9 +6,6 @@ function Landing() {
       <div className="landing-noise" aria-hidden="true" />
       <div className="landing-glow" aria-hidden="true" />
       <div className="landing-grid" aria-hidden="true" />
-      <div className="landing-scanlines" aria-hidden="true" />
-      <div className="landing-orbit" aria-hidden="true" />
-      <div className="landing-orbit secondary" aria-hidden="true" />
       <div className="landing-route-ribbon" aria-hidden="true">
         <span className="ribbon-node" />
         <span className="ribbon-node" />
