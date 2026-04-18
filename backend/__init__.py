@@ -1,4 +1,3 @@
-"""MyApp Backend - A full-stack platform template"""
+"""DeliverU backend package."""
 
 __version__ = "1.0.0"
-

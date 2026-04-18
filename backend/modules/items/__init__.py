@@ -1,2 +1,1 @@
-"""Items module - Example CRUD pattern"""
-
+"""Legacy sample items module kept inactive during migration."""

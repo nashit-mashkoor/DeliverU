@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Any, Dict, Optional
 
-from fastapi import HTTPException, Request, status
+from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
@@ -142,3 +142,16 @@ class JWTBearer(HTTPBearer):
             logger.error(f"JWT verification failed: {e}")
             return None
 
+
+def require_superuser(current_user: Dict[str, Any] = Depends(JWTBearer())) -> Dict[str, Any]:
+    """Allow access only to admin users."""
+    if not current_user.get("is_superuser", False):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Admin access required")
+    return current_user
+
+
+def require_customer(current_user: Dict[str, Any] = Depends(JWTBearer())) -> Dict[str, Any]:
+    """Allow access only to non-admin customer users."""
+    if current_user.get("is_superuser", False):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Customer access required")
+    return current_user

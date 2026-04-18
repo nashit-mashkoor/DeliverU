@@ -7,56 +7,55 @@ function Dashboard() {
   return (
     <div className="dashboard">
       <header className="dashboard-header">
-        <h1>Dashboard</h1>
-        <p>Welcome back, {user?.email}</p>
+        <h1>DeliverU Operations</h1>
+        <p>Welcome back, {user?.email}. Core modules are being enabled in sequence.</p>
       </header>
 
       <div className="dashboard-grid">
         <div className="stat-card">
-          <div className="stat-icon">👋</div>
+          <div className="stat-icon">🚀</div>
           <div className="stat-content">
-            <h3>Welcome</h3>
-            <p>Your account is active and ready to use</p>
+            <h3>Foundation Active</h3>
+            <p>Authentication and app shell are live for DeliverU implementation</p>
           </div>
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon">📦</div>
+          <div className="stat-icon">🧭</div>
           <div className="stat-content">
-            <h3>Items</h3>
-            <p>Manage your items in the Items section</p>
+            <h3>Routing Enabled</h3>
+            <p>API routing is active and ready for real DeliverU domain modules</p>
           </div>
         </div>
 
         <div className="stat-card">
           <div className="stat-icon">🔒</div>
           <div className="stat-content">
-            <h3>Secure</h3>
-            <p>Your data is protected with JWT authentication</p>
+            <h3>Secure Access</h3>
+            <p>JWT authentication protects access to authenticated API flows</p>
           </div>
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon">⚡</div>
+          <div className="stat-icon">🛒</div>
           <div className="stat-content">
-            <h3>Fast</h3>
-            <p>Built with FastAPI and React for performance</p>
+            <h3>Next Up</h3>
+            <p>Regions, delivery slots, drivers, and grocery catalog modules</p>
           </div>
         </div>
       </div>
 
       <section className="dashboard-section">
-        <h2>Getting Started</h2>
+        <h2>Current Scope</h2>
         <div className="info-card">
           <p>
-            This is a template application showcasing a full-stack architecture with:
+            This workspace is now aligned for phased DeliverU development with:
           </p>
           <ul>
-            <li><strong>FastAPI</strong> - High-performance Python backend</li>
-            <li><strong>React</strong> - Modern frontend with Vite</li>
-            <li><strong>PostgreSQL</strong> - Robust database</li>
-            <li><strong>Redis</strong> - Caching and background jobs</li>
-            <li><strong>JWT Auth</strong> - Secure authentication</li>
+            <li><strong>Auth APIs</strong> - Register, login, refresh, and profile access</li>
+            <li><strong>API Foundation</strong> - Active `/api/v1` routing without placeholder blockers</li>
+            <li><strong>Frontend Shell</strong> - Authenticated app layout ready for role-aware pages</li>
+            <li><strong>Next Slice Ready</strong> - Real domain modules can now be added incrementally</li>
           </ul>
         </div>
       </section>
@@ -65,4 +64,3 @@ function Dashboard() {
 }
 
 export default Dashboard
-

@@ -1,11 +1,10 @@
-import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
+import { Outlet, Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { toast } from 'react-toastify'
 import './Layout.css'
 
 function Layout() {
   const { user, logout } = useAuth()
-  const location = useLocation()
   const navigate = useNavigate()
 
   const handleLogout = async () => {
@@ -18,30 +17,13 @@ function Layout() {
     }
   }
 
-  const isActive = (path) => location.pathname.startsWith(path)
-
   return (
     <div className="layout">
         <nav className="navbar">
           <div className="navbar-brand">
-            <Link to="/app/dashboard">
+            <Link to="/app" className="brand-link" aria-label="Go to home">
               <span className="logo-icon">◆</span>
               <span className="logo-text">DeliverU</span>
-            </Link>
-          </div>
-
-          <div className="navbar-links">
-            <Link
-              to="/app/dashboard"
-              className={`nav-link ${isActive('/app/dashboard') ? 'active' : ''}`}
-            >
-              Dashboard
-            </Link>
-            <Link
-              to="/app/items"
-              className={`nav-link ${isActive('/app/items') ? 'active' : ''}`}
-            >
-              Items
             </Link>
           </div>
 

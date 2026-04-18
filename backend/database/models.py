@@ -27,7 +27,7 @@ class User(EasyModel, table=True):
 
 
 class Item(EasyModel, table=True):
-    """Example item table - demonstrates CRUD pattern"""
+    """Legacy sample item table retained during early migration"""
 
     __tablename__ = "item"
 
@@ -42,4 +42,3 @@ class Item(EasyModel, table=True):
 
     # Relationships
     user: Optional["User"] = Relationship(back_populates="items")
-

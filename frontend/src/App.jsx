@@ -5,7 +5,7 @@ import Landing from './pages/Landing'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
-import Items from './pages/Items'
+import { getRoleHomePath, getUserRole } from './utils/roleHome'
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth()
@@ -26,7 +26,7 @@ function ProtectedRoute({ children }) {
 }
 
 function PublicRoute({ children }) {
-  const { isAuthenticated, loading } = useAuth()
+  const { isAuthenticated, loading, user } = useAuth()
   
   if (loading) {
     return (
@@ -37,10 +37,48 @@ function PublicRoute({ children }) {
   }
   
   if (isAuthenticated) {
-    return <Navigate to="/app/dashboard" replace />
+    return <Navigate to={getRoleHomePath(user)} replace />
   }
   
   return children
+}
+
+function RoleHomeRedirect() {
+  const { user } = useAuth()
+  return <Navigate to={getRoleHomePath(user)} replace />
+}
+
+function RequireAdminRoute({ children }) {
+  const { user } = useAuth()
+  const role = getUserRole(user)
+
+  if (role !== 'admin') {
+    return <Navigate to={getRoleHomePath(user)} replace />
+  }
+
+  return children
+}
+
+function RequireCustomerRoute({ children }) {
+  const { user } = useAuth()
+  const role = getUserRole(user)
+
+  if (role === 'customer') {
+    return children
+  }
+
+  return <Navigate to={getRoleHomePath(user)} replace />
+}
+
+function RequireDriverRoute({ children }) {
+  const { user } = useAuth()
+  const role = getUserRole(user)
+
+  if (role === 'driver') {
+    return children
+  }
+
+  return <Navigate to={getRoleHomePath(user)} replace />
 }
 
 function App() {
@@ -64,9 +102,11 @@ function App() {
             <Layout />
           </ProtectedRoute>
         }>
-          <Route index element={<Navigate to="/app/dashboard" replace />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="items" element={<Items />} />
+          <Route index element={<RoleHomeRedirect />} />
+          <Route path="dashboard" element={<RoleHomeRedirect />} />
+          <Route path="customer" element={<RequireCustomerRoute><Dashboard /></RequireCustomerRoute>} />
+          <Route path="driver" element={<RequireDriverRoute><Dashboard /></RequireDriverRoute>} />
+          <Route path="admin" element={<RequireAdminRoute><Dashboard /></RequireAdminRoute>} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

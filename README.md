@@ -105,7 +105,7 @@ deliveru/
 │   │   └── crud.py          # Base CRUD operations
 │   ├── modules/             # Feature modules
 │   │   ├── auth/            # Authentication
-│   │   ├── items/           # Example CRUD module
+│   │   ├── items/           # Legacy sample module (kept inactive during migration)
 │   │   └── jobs/            # Background jobs
 │   ├── services/            # Shared services
 │   ├── utils/               # Utilities

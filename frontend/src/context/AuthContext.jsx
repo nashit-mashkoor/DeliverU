@@ -29,6 +29,7 @@ export function AuthProvider({ children }) {
     await authService.login(email, password)
     const userData = await authService.getCurrentUser()
     setUser(userData)
+    return userData
   }
 
   const register = async (email, password, passwordConfirm) => {
@@ -64,4 +65,3 @@ export function useAuth() {
   }
   return context
 }
-

@@ -15,6 +15,8 @@ Use the document like this:
 - For every slice, include schema, migration, API, auth and permissions, frontend flow, tests, and manual QA.
 - After finishing a slice, update the matching **phase checklist items** so the document stays complete.
 - If a task appears in both a slice and a phase, the **slice defines sequencing** and the **phase defines coverage**.
+- After every implementation update the "Current Repo Status" by marking the relvent portion and updating the status
+
 
 In practice:
 
@@ -28,24 +30,22 @@ This structure prevents two common failures:
 
 ## Build Strategy
 
-- [ ] Do not implement the whole frontend first.
-- [ ] Do not implement the entire backend blindly in isolation either.
-- [ ] Start by completing the foundation work in Slice 0, then move through the remaining slices in order.
-- [ ] Build each feature as a vertical slice in this order: schema -> migration -> DTOs/services/controllers -> tests -> frontend page/flow -> integration QA.
-- [ ] Keep MVP focused on the core one-time grocery ordering lifecycle first.
-- [ ] Use seed data and minimal internal admin tooling early so customer and driver flows are not blocked by a polished admin panel.
-- [ ] Defer recurring orders, proof uploads, analytics, and advanced finance workflows until the core order lifecycle is stable.
+- Do not implement the whole frontend first.
+- Do not implement the entire backend blindly in isolation either.
+- Start by completing the foundation work in Slice 0, then move through the remaining slices in order.
+- Build each feature as a vertical slice in this order: schema -> migration -> DTOs/services/controllers -> tests -> frontend page/flow -> integration QA.
+- Use seed data and minimal internal admin tooling early so customer and driver flows are not blocked by a polished admin panel.
 
-## Current Repo Reality
+## Current Repo Status
 
-- [ ] The repo already contains a usable full-stack template structure with `frontend`, `backend`, Docker, Postgres, Redis, MinIO, TaskIQ, and Alembic.
-- [ ] The landing page is implemented, but the authenticated product experience is still mostly template-level.
-- [ ] Backend starter modules exist for auth and a sample `items` resource, but the real DeliverU API is not yet active because `/api/v1/*` is currently blocked by a global placeholder in `backend/main.py`.
-- [ ] The current database models are still template-level and do not yet represent the actual DeliverU domain from the SRS.
-- [ ] The implementation effort should therefore begin by turning the template shell into a real, role-aware DeliverU platform and then moving through the ordered slices below.
-- [ ] Replace remaining template naming such as `MyApp`, template dashboard copy, and example-only item language.
-- [ ] Remove the `/api/v1/{path:path}` placeholder from `backend/main.py`.
-- [ ] Wire real routers into `backend/main.py` starting with auth and then real DeliverU modules.
+- [X] The repo already contains a usable full-stack template structure with `frontend`, `backend`, Docker, Postgres, Redis, MinIO, TaskIQ, and Alembic.
+- [X] The landing page is implemented, but the authenticated product experience is still mostly template-level.
+- [X] Backend starter modules exist for auth and a sample `items` resource, but the real DeliverU API is not yet active because `/api/v1/*` is currently blocked by a global placeholder in `backend/main.py`.
+- [X] The current database models are still template-level and do not yet represent the actual DeliverU domain from the SRS.
+- [X] The implementation effort should therefore begin by turning the template shell into a real, role-aware DeliverU platform and then moving through the ordered slices below.
+- [X] Replace remaining template naming such as `MyApp`, template dashboard copy, and example-only item language.
+- [X] Remove the `/api/v1/{path:path}` placeholder from `backend/main.py`.
+- [X] Wire real routers into `backend/main.py` starting with auth and then real DeliverU modules.
 - [ ] Retire the example `items` module once real DeliverU domain modules exist or keep it only if it is repurposed into grocery/catalog code.
 
 ## Ordered Vertical Slices
@@ -54,12 +54,12 @@ Follow this exact implementation order. Complete each slice end-to-end before st
 
 For every slice, use this execution pattern:
 
-- [ ] Schema/model updates.
-- [ ] Alembic migration.
-- [ ] DTOs, service logic, and controller/router.
-- [ ] Auth and permission checks.
-- [ ] Frontend UI flow.
-- [ ] Tests and manual QA mapped to SRS use cases.
+-  Schema/model updates.
+-  Alembic migration.
+-  DTOs, service logic, and controller/router.
+-  Auth and permission checks.
+-  Frontend UI flow.
+-  Tests and manual QA mapped to SRS use cases.
 
 ### Slice 0: Foundation Completion (Phases 0 to 3)
 
@@ -91,9 +91,9 @@ Relevant phases:
 - Phase 3: Authentication and RBAC
 - Phase 13: Hardening and Release Readiness
 
-- [ ] Remove the global `501` placeholder and enable real API routing in `backend/main.py`.
-- [ ] Register working routers and ensure backend serves real endpoints.
-- [ ] Clean baseline template naming in backend/frontend entry files.
+- [X] Remove the global `501` placeholder and enable real API routing in `backend/main.py`.
+- [X] Register working routers and ensure backend serves real endpoints.
+- [X] Clean baseline template naming in backend/frontend entry files.
 - [ ] Ensure local dev and Docker flows run cleanly with current env files.
 - [ ] Confirm the app can boot, serve APIs, and support the next feature slices without template blockers.
 
@@ -303,24 +303,12 @@ Relevant phases:
 - [ ] Build admin analytics dashboard pages.
 - [ ] Validate that analytics reflect real operational data.
 
-## MVP Cut Line
-
-- [ ] MVP target is completion of Slices 0 through 13.
-- [ ] Defer Slices 14 through 19 until the core customer -> driver -> admin order lifecycle is stable.
-
-## Deferrable Scope (Post-MVP)
-
-- [ ] Restaurant enrichment beyond the MVP free-text request flow.
-- [ ] Complaints depth and advanced resolution workflows.
-- [ ] Proof uploads and attachment audit flows.
-- [ ] Driver finance refinement.
-- [ ] Recurring order automation.
-- [ ] Analytics and optimization dashboards.
+# Phases
 
 ## Phase 0: Lock Core Decisions
 
 - [ ] Decide user model: single `users` table with role enum (`admin`, `customer`, `driver`) is recommended.
-- [ ] Decide whether customer, driver, and admin use one React app with role-based routing; recommended: yes.
+- [X] Decide whether customer, driver, and admin use one React app with role-based routing; recommended: yes.
 - [ ] Decide region geometry for MVP; recommended: simple polygon or bounding box first.
 - [ ] Define slot business rules: capacity, cutoff time, lock time, active/inactive state.
 - [ ] Define order statuses: `draft`, `placed`, `locked`, `assigned`, `in_progress`, `completed`, `cancelled`.
@@ -364,10 +352,10 @@ Relevant phases:
 ## Phase 3: Authentication and RBAC
 
 - [ ] Expand auth beyond the current template user model into role-aware authentication.
-- [ ] Implement customer signup.
+- [X] Implement customer signup.
 - [ ] Implement admin and driver account creation flows.
-- [ ] Implement login, refresh token, logout, current user, change password, and deactivate endpoints.
-- [ ] Implement role-based authorization helpers and route guards.
+- [X] Implement login, refresh token, logout, current user, change password, and deactivate endpoints.
+- [X] Implement role-based authorization helpers and route guards.
 - [ ] Add backend tests for auth success, failure, inactive users, and permissions.
 - [ ] Update frontend auth context to understand roles and redirect users to the correct area.
 
@@ -485,7 +473,7 @@ Relevant phases:
 
 ## Recommended First Vertical Slice
 
-- [ ] Wire existing auth router and make login/register/me work for real.
+- [X] Wire existing auth router and make login/register/me work for real.
 - [ ] Implement user roles and profile basics.
 - [ ] Implement regions, slots, and grocery catalog with seed data.
 - [ ] Implement customer place-order flow for grocery-only orders.

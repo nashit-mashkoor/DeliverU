@@ -11,6 +11,7 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
 from backend.constants import API_PASSWORD, API_USER, FRONTEND_URL, PRODUCTION
+from backend.modules.auth.auth_controller import auth_router
 from backend.redis_engine import redis_close, redis_ping
 from backend.utils.logging import Logging
 from backend.utils.middlewares import LogRequestsMiddleware
@@ -55,7 +56,7 @@ def get_current_username(
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """Application lifespan manager for startup and shutdown tasks"""
     # Startup
-    logger.info("Starting MyApp Backend")
+    logger.info("Starting DeliverU Backend")
     if await redis_ping():
         logger.info("Redis connection established")
     else:
@@ -64,7 +65,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     yield
 
     # Shutdown
-    logger.info("Shutting down MyApp Backend")
+    logger.info("Shutting down DeliverU Backend")
     try:
         await redis_close()
     except Exception as e:
@@ -73,8 +74,8 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
 # Create FastAPI app
 app = FastAPI(
-    title="MyApp API",
-    description="A full-stack platform template API",
+    title="DeliverU API",
+    description="API for the DeliverU grocery and delivery platform",
     version="1.0.0",
     docs_url=None,
     redoc_url=None,
@@ -86,13 +87,13 @@ app = FastAPI(
 @app.get("/docs", include_in_schema=False)
 async def get_swagger_documentation(username: str = Depends(get_current_username)) -> HTMLResponse:
     """Serve Swagger UI documentation"""
-    return get_swagger_ui_html(openapi_url="/openapi.json", title="MyApp API Docs")
+    return get_swagger_ui_html(openapi_url="/openapi.json", title="DeliverU API Docs")
 
 
 @app.get("/redoc", include_in_schema=False)
 async def get_redoc_documentation(username: str = Depends(get_current_username)) -> HTMLResponse:
     """Serve ReDoc documentation"""
-    return get_redoc_html(openapi_url="/openapi.json", title="MyApp API Docs")
+    return get_redoc_html(openapi_url="/openapi.json", title="DeliverU API Docs")
 
 
 @app.get("/openapi.json", include_in_schema=False)
@@ -152,12 +153,8 @@ if PRODUCTION:
 # Add request logging middleware
 app.add_middleware(LogRequestsMiddleware)
 
-@app.api_route("/api/v1/{path:path}", methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], include_in_schema=False)
-async def api_placeholder(path: str) -> JSONResponse:
-    return JSONResponse(
-        status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        content={"detail": "API placeholder. Endpoints are currently disabled."},
-    )
+# Register active API routers
+app.include_router(auth_router)
 
 
 @app.exception_handler(Exception)
