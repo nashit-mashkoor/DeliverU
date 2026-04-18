@@ -1,10 +1,15 @@
 import os
 import secrets
 import sys
-from dotenv import load_dotenv
+from dotenv import find_dotenv, load_dotenv
 
 # Don't override environment variables that are already set
-load_dotenv(override=False)
+env_file = os.environ.get("ENV_FILE", ".env")
+if os.path.isabs(env_file):
+    env_path = env_file
+else:
+    env_path = find_dotenv(env_file, usecwd=True) or env_file
+load_dotenv(env_path, override=False)
 
 
 def strtobool(val: str) -> bool:

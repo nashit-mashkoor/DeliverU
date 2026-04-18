@@ -56,7 +56,10 @@ A production-ready full-stack platform template with FastAPI backend, React fron
 uv sync
 
 # Start development server
-make dev
+make dev-backend
+
+# Use a specific env file
+ENV_FILE=.env.dev make dev-backend
 
 # Run linting
 make lint
@@ -82,6 +85,12 @@ cd frontend
 npm install
 npm run dev
 ```
+
+### Environment Files
+
+- Default env file is `.env`.
+- Override for any Make target with `ENV_FILE=/path/to/.env.dev`.
+- Docker Compose targets also honor `ENV_FILE`.
 
 ## Project Structure
 
@@ -145,4 +154,3 @@ See `.env.example` for all available configuration options.
 ## License
 
 MIT
-

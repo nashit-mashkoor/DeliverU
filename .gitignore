@@ -14,7 +14,7 @@ build/
 .venv/
 venv/
 ENV/
-
+tmp
 # IDE
 .idea/
 .vscode/
