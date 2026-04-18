@@ -1,22 +1,22 @@
 :root {
-  --color-bg: #0b1117;
-  --color-bg-deep: #0a0f14;
-  --color-surface: rgba(16, 24, 34, 0.88);
-  --color-surface-strong: #121b26;
-  --color-surface-hover: rgba(24, 36, 50, 0.95);
-  --color-border: rgba(99, 241, 255, 0.18);
-  --color-border-strong: rgba(99, 241, 255, 0.32);
-  --color-text: #e6f1ff;
-  --color-text-muted: rgba(230, 241, 255, 0.65);
-  --color-primary: #63f1ff;
-  --color-primary-hover: #2bd5ea;
-  --color-accent: #ffb454;
-  --color-signal: #ff6ad5;
+  --color-bg: #070d14;
+  --color-bg-deep: #040911;
+  --color-surface: rgba(14, 23, 34, 0.88);
+  --color-surface-strong: #101c29;
+  --color-surface-hover: rgba(20, 33, 47, 0.95);
+  --color-border: rgba(94, 232, 255, 0.22);
+  --color-border-strong: rgba(94, 232, 255, 0.4);
+  --color-text: #e8f6ff;
+  --color-text-muted: rgba(220, 237, 246, 0.66);
+  --color-primary: #5ee8ff;
+  --color-primary-hover: #34d7f3;
+  --color-accent: #ffa94a;
+  --color-signal: #63b4ff;
   --color-success: #3dd98a;
   --color-error: #ff6b6b;
 
-  --font-display: "Oxanium", "Times New Roman", serif;
-  --font-body: "Sora", "Helvetica Neue", sans-serif;
+  --font-display: "Audiowide", "Trebuchet MS", sans-serif;
+  --font-body: "Exo 2", "Segoe UI", sans-serif;
 
   --radius-lg: 20px;
   --radius-md: 14px;

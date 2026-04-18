@@ -1,119 +1,108 @@
 # DeliverU Frontend Design System
 
-This document defines the shared visual system for DeliverU (landing + authenticated app). It is a tech-futurist, dark-base aesthetic anchored in signal, routing, and urban network metaphors. All front-end additions should align with this system to keep the experience cohesive.
+This document defines the shared visual language for DeliverU. The refreshed direction is **Neon Control Room**: dark, technical, and operationally precise. The landing page and authenticated app should feel like one continuous product surface.
 
 ## Core Intent
 
-- Tone: nocturnal, signal-driven, precise, kinetic
-- Visual metaphor: networked routes, glowing nodes, shared loops, ambient data flow
-- Differentiator: the "route ribbon" motif threading through sections to unify the narrative
-- Ambient layers: minimal, one primary motif only (route ribbon)
+- Tone: focused, kinetic, system-level confidence
+- Visual metaphor: route telemetry, control panels, synchronized loops
+- Memorable signature: animated telemetry sweep crossing route graph components
+- Principle: one bold motif executed consistently beats many unrelated effects
 
-## Typography System
+## Typography
 
-Use a distinct display font for headlines and a restrained, readable body font for long copy.
+- Display: `Audiowide`
+- Body/UI: `Exo 2`
 
-- Display: Oxanium (geometric, technical)
-- Body: Sora (modern, stable)
+Usage:
+- Headlines: uppercase display style with tight line-height and moderate tracking
+- Kicker labels: micro uppercase with high tracking and restrained contrast
+- Body copy: readable technical tone, 1.65-1.8 line-height
+- Numeric emphasis: display font for key metrics and telemetry values
 
-Usage rules:
-- Headline (hero): Oxanium, large scale, tight line height, subtle tracking
-- Section titles: Oxanium, medium-large scale
-- Labels and chips: uppercase, high letter-spacing, small size, muted color
-- Body copy: Sora, moderate line height, balanced contrast
+## Color and Tokens
 
-## Color System
+Global tokens live in `frontend/src/styles/theme.css`. Landing-specific tokens are scoped in `frontend/src/pages/Landing.css`.
 
-Dark base with electric accents and soft glow. Avoid purple-on-white or flat gray cards.
+Core palette:
+- Base: deep navy-black layers (`--color-bg`, `--color-bg-deep`)
+- Primary: electric cyan (`--color-primary`)
+- Secondary accent: cool signal blue (`--color-signal`)
+- Utility accent: amber (`--color-accent`) for hotspots and active nodes
 
-Core variables (local to landing page CSS):
-- --paper: base background
-- --paper-deep: deeper background layer
-- --surface: card surfaces, slightly translucent
-- --surface-strong: deeper surface for high-contrast sections
-- --ink: primary text color
-- --accent: primary electric accent (cyan)
-- --accent-deep: hover/deeper cyan
-- --signal: secondary accent (magenta)
-- --outline: subtle electric border
-- --soft-shadow / --hard-shadow: depth and lift
-
-Color rules:
-- Use accent for primary CTA and key emphasis in headers.
-- Use signal sparingly for standout cards or nodes.
-- Keep surface contrast subtle; rely on glow and outline for depth.
+Guidelines:
+- Keep primary emphasis on cyan; amber is a sparse highlight, not a dominant fill
+- Use translucent surfaces with subtle internal highlights for depth
+- Build hierarchy through contrast + spacing, not heavy saturation everywhere
 
 ## Motion System
 
-Motion communicates signal flow and momentum, not playful bounce.
+Motion communicates flow and system response.
 
-- Page-load: staggered fade-up reveals for sections
-- Ambient: slow drift on the route ribbon only
-- Micro: CTA hover lift, card hover lift, glow intensifies on hover
+- Entrance: staged reveal-up animation per major section
+- Ambient: telemetry sweep and ticker movement only
+- Interaction: controlled lift on cards/buttons and border/glow intensification
+- Accessibility: `prefers-reduced-motion` must disable non-essential animation
 
-Accessibility:
-- Respect prefers-reduced-motion by removing ambient animations and transitions.
+Avoid playful bounce or excessive micro-interactions.
 
-## Layout & Composition
+## Layout and Composition
 
-- Asymmetry is intentional; avoid centered, overly balanced blocks.
-- Overlap and depth: hero card and ribbon should feel layered.
-- Use generous negative space; avoid overcrowding.
-- The route ribbon is a visual through-line; it should appear behind primary sections.
-- Section labels sit inside sections to anchor hierarchy and avoid generic headers.
+- Strong asymmetry in hero (copy left, operations panel right)
+- Structured sections with clear rhythm and spacing between content bands
+- Panel-first composition: bordered, translucent modules over atmospheric background
+- Maintain negative space around headings to preserve scanability
 
 ## Component Recipes
 
-Buttons:
-- Primary: electric fill with dark text, glow and lift on hover
-- Secondary: translucent dark surface with cyan outline
-- Ghost: transparent with cyan border and soft hover
+### Navigation
+- Compact operational header with micro-label links
+- Brand uses a simple geometric mark and display lettering
 
-Cards:
-- Dark translucent surfaces with thin cyan outlines
-- Minimal accents; avoid dashed borders to reduce visual noise
-- Subtle glow or shadow for depth
+### Buttons
+- Primary: bright cyan gradient with dark text and subtle inset depth
+- Secondary/Ghost: dark translucent surface with cyan border
+- All buttons use uppercase micro-copy with consistent tracking
 
-Chips / Badges:
-- Uppercase text, high tracking, rounded pill shapes
-- Low-saturation background with cyan border
+### Data Cards
+- Thin cyan borders with low-opacity dark fills
+- Numeric value in display type, supporting label in compact uppercase
+- Hover state lifts card by 2-4px with controlled shadow growth
 
-Route Ribbon:
-- Wide diagonal band with restrained gradient shift and 3-4 glowing nodes
-- Slow drift animation to suggest flow
+### Operations Panel
+- Includes route graph with active nodes and telemetry sweep animation
+- Uses stacked status rows for immediate state scanning
 
-Section Labels:
-- Uppercase micro-labels that sit above section content
-- Include a subtle dot marker to reinforce the signal motif
+## Landing Page Structure
 
-## App-Specific Guidance
+`frontend/src/pages/Landing.jsx` should follow this sequence:
+1. Hero + control panel
+2. Telemetry ticker
+3. Operations matrix metrics
+4. Workflow timeline
+5. Reliability signal cards
+6. Final call to action
 
-App shell (Dashboard/Items/Auth):
-- Navigation sits on a translucent dark bar with cyan outline and active-pill state.
-- User identity shows as a subtle capsule; do not over-emphasize.
-- Page headers use display font with spaced tracking; subcopy is muted and compact.
+This order creates a clear narrative from promise -> evidence -> activation.
 
-Forms:
-- Inputs are dark, translucent surfaces with cyan focus ring.
-- Labels are uppercase with high tracking; avoid large, heavy label text.
-- Primary CTAs use electric cyan fill; secondary are outlined.
+## App Surface Alignment
 
-Modals:
-- Use dark translucent backdrops with blur.
-- Modal panels follow the same outline + glow logic; avoid light panels.
+Authenticated pages (`Layout`, `Dashboard`, `Items`, `Auth`) should continue using shared tokens and preserve:
+- dark translucent containers
+- cyan border language
+- uppercase utility labels
+- restrained glow depth
 
-Cards and lists:
-- Default card surfaces use the same translucent dark with thin cyan outline.
-- Status pills use small uppercase labels; green for active, red for inactive.
+If introducing new components, derive styles from existing tokens first.
 
-## Do / Don’t
+## Do / Don't
 
 Do:
-- Maintain the dark-base with electric accents
-- Use glow and depth instead of flat surfaces
-- Keep typography and spacing consistent with the system
+- Keep visual density intentional and modular
+- Reuse tokenized spacing, border, and shadow values
+- Prioritize clear hierarchy for fast scanning
 
-Don’t:
-- Introduce light UI patterns or white backgrounds
-- Use generic system fonts or default buttons
-- Add dense gradients or purple-on-white themes
+Don't:
+- Introduce light-theme sections into the default experience
+- Mix unrelated visual styles in the same page
+- Revert to generic system fonts or default component kits

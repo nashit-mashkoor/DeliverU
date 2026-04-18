@@ -129,7 +129,7 @@ deliveru/
 
 ## Frontend Design System
 
-The frontend follows the Signal-dark visual system described in `docs/design.md`. Keep all additions aligned to the shared typography, color, motion, and component rules to preserve consistency across the landing page and authenticated app.
+The frontend follows the Neon Control Room visual system described in `docs/design.md`. Keep additions aligned to the shared typography, color, motion, and component rules so the landing page and authenticated app remain cohesive.
 
 ## Adding New Features
 
