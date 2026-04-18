@@ -18,40 +18,40 @@ function Layout() {
     }
   }
 
-  const isActive = (path) => location.pathname === path
+  const isActive = (path) => location.pathname.startsWith(path)
 
   return (
     <div className="layout">
-      <nav className="navbar">
-        <div className="navbar-brand">
-          <Link to="/dashboard">
-            <span className="logo-icon">◆</span>
-            <span className="logo-text">MyApp</span>
-          </Link>
-        </div>
-        
-        <div className="navbar-links">
-          <Link 
-            to="/dashboard" 
-            className={`nav-link ${isActive('/dashboard') ? 'active' : ''}`}
-          >
-            Dashboard
-          </Link>
-          <Link 
-            to="/items" 
-            className={`nav-link ${isActive('/items') ? 'active' : ''}`}
-          >
-            Items
-          </Link>
-        </div>
+        <nav className="navbar">
+          <div className="navbar-brand">
+            <Link to="/app/dashboard">
+              <span className="logo-icon">◆</span>
+              <span className="logo-text">DeliverU</span>
+            </Link>
+          </div>
 
-        <div className="navbar-user">
-          <span className="user-email">{user?.email}</span>
-          <button onClick={handleLogout} className="btn btn-secondary btn-sm">
-            Logout
-          </button>
-        </div>
-      </nav>
+          <div className="navbar-links">
+            <Link
+              to="/app/dashboard"
+              className={`nav-link ${isActive('/app/dashboard') ? 'active' : ''}`}
+            >
+              Dashboard
+            </Link>
+            <Link
+              to="/app/items"
+              className={`nav-link ${isActive('/app/items') ? 'active' : ''}`}
+            >
+              Items
+            </Link>
+          </div>
+
+          <div className="navbar-user">
+            <span className="user-email">{user?.email}</span>
+            <button onClick={handleLogout} className="btn btn-secondary btn-sm">
+              Logout
+            </button>
+          </div>
+        </nav>
 
       <main className="main-content">
         <Outlet />
@@ -61,4 +61,3 @@ function Layout() {
 }
 
 export default Layout
-

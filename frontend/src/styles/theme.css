@@ -1,31 +1,35 @@
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700&family=Manrope:wght@300;400;500;600&display=swap");
-
 :root {
-  --color-bg: #f4f6f7;
-  --color-surface: #ffffff;
-  --color-surface-hover: #f5faf9;
-  --color-border: #e3e8ed;
-  --color-text: #1a1f24;
-  --color-text-muted: #5a6672;
-  --color-primary: #0f8b8d;
-  --color-primary-hover: #0b5e60;
-  --color-accent: #0f8b8d;
-  --color-accent-deep: #0b5e60;
-  --color-highlight: #e8f6f5;
-  --color-success: #2c9b5d;
-  --color-error: #c74a4a;
+  --color-bg: #0b1117;
+  --color-bg-deep: #0a0f14;
+  --color-surface: rgba(16, 24, 34, 0.88);
+  --color-surface-strong: #121b26;
+  --color-surface-hover: rgba(24, 36, 50, 0.95);
+  --color-border: rgba(99, 241, 255, 0.18);
+  --color-border-strong: rgba(99, 241, 255, 0.32);
+  --color-text: #e6f1ff;
+  --color-text-muted: rgba(230, 241, 255, 0.65);
+  --color-primary: #63f1ff;
+  --color-primary-hover: #2bd5ea;
+  --color-accent: #ffb454;
+  --color-signal: #ff6ad5;
+  --color-success: #3dd98a;
+  --color-error: #ff6b6b;
 
-  --font-display: "Fraunces", "Times New Roman", serif;
-  --font-body: "Manrope", "Helvetica Neue", sans-serif;
+  --font-display: "Oxanium", "Times New Roman", serif;
+  --font-body: "Sora", "Helvetica Neue", sans-serif;
 
-  --radius-lg: 18px;
-  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
   --radius-pill: 999px;
 
-  --shadow-soft: 0 20px 50px rgba(15, 27, 33, 0.12);
-  --shadow-lift: 0 16px 30px rgba(15, 27, 33, 0.18);
+  --shadow-soft: 0 24px 60px rgba(4, 10, 18, 0.45);
+  --shadow-lift: 0 18px 40px rgba(6, 14, 24, 0.5);
+  --shadow-glow: 0 0 24px rgba(99, 241, 255, 0.2);
 
-  --duration-fast: 180ms;
-  --duration-slow: 540ms;
+  --duration-fast: 160ms;
+  --duration-medium: 320ms;
+  --duration-slow: 620ms;
   --ease-standard: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }

@@ -1,26 +1,26 @@
-@import url("https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700;800&family=Sora:wght@300;400;500;600&display=swap");
-
 .landing {
-  --ink: #e6f0ff;
-  --paper: #0a0f16;
-  --paper-deep: #0d141d;
-  --surface: rgba(18, 26, 38, 0.92);
-  --surface-strong: rgba(21, 31, 46, 0.98);
-  --accent: #63f1ff;
-  --accent-deep: #25c7e4;
-  --signal: #ff5cff;
-  --outline: rgba(99, 241, 255, 0.22);
-  --soft-shadow: 0 22px 50px rgba(4, 10, 18, 0.45);
-  --hard-shadow: 0 14px 34px rgba(3, 9, 16, 0.6);
-  --glow: 0 0 18px rgba(99, 241, 255, 0.32);
+  --ink: #e8f3ff;
+  --paper: var(--color-bg);
+  --paper-deep: var(--color-bg-deep);
+  --surface: rgba(12, 18, 28, 0.92);
+  --surface-strong: rgba(10, 16, 24, 0.96);
+  --accent: var(--color-primary);
+  --accent-deep: var(--color-primary-hover);
+  --signal: var(--color-signal);
+  --ember: var(--color-accent);
+  --outline: rgba(99, 241, 255, 0.28);
+  --soft-shadow: 0 26px 60px rgba(4, 10, 18, 0.55);
+  --hard-shadow: 0 20px 40px rgba(3, 9, 16, 0.7);
+  --glow: 0 0 22px rgba(99, 241, 255, 0.28);
 
   min-height: 100vh;
   padding: 48px 28px 96px;
-  background: radial-gradient(circle at 15% 10%, rgba(99, 241, 255, 0.18), transparent 52%),
-    radial-gradient(circle at 85% 20%, rgba(255, 92, 255, 0.16), transparent 45%),
-    linear-gradient(150deg, var(--paper) 0%, var(--paper-deep) 100%);
+  background: radial-gradient(circle at 12% 8%, rgba(99, 241, 255, 0.18), transparent 50%),
+    radial-gradient(circle at 88% 18%, rgba(255, 180, 84, 0.16), transparent 42%),
+    radial-gradient(circle at 50% 90%, rgba(255, 106, 213, 0.12), transparent 45%),
+    linear-gradient(160deg, var(--paper) 0%, var(--paper-deep) 100%);
   color: var(--ink);
-  font-family: "Sora", "Manrope", sans-serif;
+  font-family: var(--font-body);
   position: relative;
   overflow: hidden;
 }
@@ -29,8 +29,8 @@
   content: "";
   position: absolute;
   inset: -20% -10% 0;
-  background: repeating-linear-gradient(140deg, rgba(99, 241, 255, 0.06) 0px, rgba(99, 241, 255, 0.06) 1px, transparent 1px, transparent 14px);
-  opacity: 0.22;
+  background: repeating-linear-gradient(120deg, rgba(99, 241, 255, 0.07) 0px, rgba(99, 241, 255, 0.07) 1px, transparent 1px, transparent 18px);
+  opacity: 0.24;
   pointer-events: none;
 }
 
@@ -38,7 +38,7 @@
   position: absolute;
   inset: 0;
   background: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.08), transparent 60%),
-    radial-gradient(circle at 90% 60%, rgba(0, 0, 0, 0.35), transparent 45%);
+    radial-gradient(circle at 90% 60%, rgba(0, 0, 0, 0.4), transparent 45%);
   mix-blend-mode: screen;
   opacity: 0.35;
   pointer-events: none;
@@ -50,7 +50,7 @@
   width: 620px;
   height: 620px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(99, 241, 255, 0.28) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(99, 241, 255, 0.3) 0%, transparent 70%);
   top: -240px;
   right: -220px;
   filter: blur(10px);
@@ -62,8 +62,8 @@
   inset: 0;
   background-image: linear-gradient(rgba(99, 241, 255, 0.08) 1px, transparent 1px),
     linear-gradient(90deg, rgba(99, 241, 255, 0.08) 1px, transparent 1px);
-  background-size: 120px 120px;
-  opacity: 0.15;
+  background-size: 150px 150px;
+  opacity: 0.18;
   mix-blend-mode: screen;
   pointer-events: none;
   z-index: 0;
@@ -77,10 +77,10 @@
   top: 36vh;
   width: 120vw;
   height: 160px;
-  background: linear-gradient(90deg, rgba(99, 241, 255, 0.14), rgba(99, 241, 255, 0.08), rgba(99, 241, 255, 0.14));
-  border-top: 1px solid rgba(99, 241, 255, 0.18);
-  border-bottom: 1px solid rgba(99, 241, 255, 0.18);
-  transform: rotate(-4deg);
+  background: linear-gradient(90deg, rgba(99, 241, 255, 0.14), rgba(255, 180, 84, 0.12), rgba(99, 241, 255, 0.14));
+  border-top: 1px solid rgba(99, 241, 255, 0.22);
+  border-bottom: 1px solid rgba(99, 241, 255, 0.22);
+  transform: rotate(-3deg);
   filter: blur(0.2px);
   opacity: 0.28;
   z-index: 0;
@@ -144,7 +144,7 @@
 }
 
 .landing-brand {
-  font-family: "Oxanium", "Fraunces", serif;
+  font-family: var(--font-display);
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.2em;
@@ -175,11 +175,12 @@
   color: rgba(230, 240, 255, 0.65);
 }
 
-.landing-nav-links span {
+.landing-nav-links a {
   position: relative;
+  color: inherit;
 }
 
-.landing-nav-links span::after {
+.landing-nav-links a::after {
   content: "";
   position: absolute;
   left: 0;
@@ -190,7 +191,7 @@
   transition: width 200ms ease;
 }
 
-.landing-nav-links span:hover::after {
+.landing-nav-links a:hover::after {
   width: 100%;
 }
 
@@ -211,7 +212,7 @@
 }
 
 .landing-hero-copy h1 {
-  font-family: "Oxanium", "Fraunces", serif;
+  font-family: var(--font-display);
   font-size: clamp(2.9rem, 5vw, 4.6rem);
   line-height: 1.01;
   letter-spacing: 0.02em;
@@ -238,8 +239,8 @@
   align-items: center;
   padding: 8px 14px;
   border-radius: 999px;
-  background: rgba(99, 241, 255, 0.08);
-  border: 1px solid rgba(99, 241, 255, 0.2);
+  background: rgba(99, 241, 255, 0.1);
+  border: 1px solid rgba(99, 241, 255, 0.3);
   text-transform: uppercase;
   letter-spacing: 0.2em;
   font-size: 0.64rem;
@@ -301,7 +302,7 @@
   padding: 12px 24px;
   border-radius: 999px;
   border: 1px solid transparent;
-  background: var(--accent);
+  background: linear-gradient(120deg, var(--accent) 0%, var(--ember) 100%);
   color: #071018;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -324,7 +325,7 @@
 
 .landing-button:hover {
   transform: translateY(-2px) scale(1.01);
-  background: var(--accent-deep);
+  background: linear-gradient(120deg, var(--accent-deep) 0%, var(--ember) 100%);
 }
 
 .landing-button:hover::after {
@@ -334,7 +335,7 @@
 .landing-button.secondary {
   background: rgba(10, 16, 24, 0.6);
   color: var(--ink);
-  border-color: rgba(99, 241, 255, 0.22);
+  border-color: rgba(99, 241, 255, 0.28);
   box-shadow: none;
   min-width: 120px;
 }
@@ -369,7 +370,7 @@
 }
 
 .stat-value {
-  font-family: "Oxanium", "Fraunces", serif;
+  font-family: var(--font-display);
   font-size: 1.4rem;
 }
 
@@ -384,9 +385,9 @@
   position: relative;
   padding: 24px;
   border-radius: 24px;
-  background: var(--surface);
-  border: 1px solid rgba(99, 241, 255, 0.22);
-  box-shadow: var(--soft-shadow);
+  background: linear-gradient(160deg, rgba(12, 18, 28, 0.96), rgba(10, 16, 24, 0.7));
+  border: 1px solid rgba(99, 241, 255, 0.3);
+  box-shadow: var(--soft-shadow), 0 0 18px rgba(99, 241, 255, 0.18);
   transform: none;
   backdrop-filter: blur(6px);
 }
@@ -404,7 +405,7 @@
   display: flex;
   justify-content: space-between;
   padding: 10px 14px;
-  background: rgba(6, 11, 18, 0.9);
+  background: rgba(8, 14, 20, 0.92);
   color: var(--ink);
   border-radius: 14px;
   font-size: 0.78rem;
@@ -430,7 +431,7 @@
   right: 10px;
   top: 50%;
   height: 2px;
-  background: linear-gradient(90deg, rgba(99, 241, 255, 0.1), rgba(99, 241, 255, 0.6), rgba(99, 241, 255, 0.1));
+  background: linear-gradient(90deg, rgba(99, 241, 255, 0.12), rgba(255, 180, 84, 0.6), rgba(99, 241, 255, 0.12));
 }
 
 .map-node {
@@ -444,8 +445,8 @@
 }
 
 .map-node.active {
-  background: var(--accent);
-  box-shadow: 0 0 0 6px rgba(99, 241, 255, 0.2);
+  background: var(--ember);
+  box-shadow: 0 0 0 6px rgba(255, 180, 84, 0.2);
 }
 
 .hero-card-stack {
@@ -497,7 +498,7 @@
 }
 
 .landing-route h2 {
-  font-family: "Oxanium", "Fraunces", serif;
+  font-family: var(--font-display);
   font-size: 2rem;
   margin-bottom: 8px;
 }
@@ -520,7 +521,7 @@
   padding: 6px 12px;
   border: 1px solid rgba(99, 241, 255, 0.22);
   border-radius: 999px;
-  background: rgba(99, 241, 255, 0.08);
+  background: rgba(99, 241, 255, 0.1);
 }
 
 .landing-marquee {
@@ -538,7 +539,7 @@
   gap: 42px;
   white-space: nowrap;
   animation: marquee 18s linear infinite;
-  font-family: "Oxanium", "Fraunces", serif;
+  font-family: var(--font-display);
   text-transform: uppercase;
   letter-spacing: 0.32em;
   font-size: 0.72rem;
@@ -559,8 +560,8 @@
 .feature-card {
   padding: 26px 24px;
   border-radius: 20px;
-  background: var(--surface);
-  border: 1px solid rgba(99, 241, 255, 0.18);
+  background: rgba(12, 18, 28, 0.92);
+  border: 1px solid rgba(99, 241, 255, 0.22);
   box-shadow: var(--soft-shadow);
   transform: translateY(0);
   transition: transform 180ms ease, box-shadow 180ms ease;
@@ -572,8 +573,8 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(120deg, rgba(99, 241, 255, 0.08), transparent 45%);
-  opacity: 0.5;
+  background: linear-gradient(120deg, rgba(99, 241, 255, 0.1), rgba(255, 180, 84, 0.08), transparent 55%);
+  opacity: 0.6;
   transition: opacity 180ms ease;
   pointer-events: none;
 }
@@ -609,7 +610,7 @@
 }
 
 .feature-card h3 {
-  font-family: "Oxanium", "Fraunces", serif;
+  font-family: var(--font-display);
   font-size: 1.4rem;
   margin-bottom: 10px;
 }
@@ -624,13 +625,13 @@
   margin: 0 auto 40px;
   padding: 36px 32px;
   border-radius: 24px;
-  border: 1px solid rgba(99, 241, 255, 0.22);
+  border: 1px solid rgba(99, 241, 255, 0.28);
   background: var(--surface-strong);
   color: #e6f0ff;
 }
 
 .steps-head h2 {
-  font-family: "Oxanium", "Fraunces", serif;
+  font-family: var(--font-display);
   font-size: 2.1rem;
   margin-bottom: 8px;
 }
@@ -649,14 +650,14 @@
 .step {
   padding: 20px;
   border-radius: 18px;
-  border: 1px solid rgba(99, 241, 255, 0.18);
-  background: rgba(10, 16, 24, 0.7);
+  border: 1px solid rgba(99, 241, 255, 0.22);
+  background: rgba(10, 16, 24, 0.75);
 }
 
 .step-index {
-  font-family: "Oxanium", "Fraunces", serif;
+  font-family: var(--font-display);
   font-size: 1.2rem;
-  color: var(--accent);
+  color: var(--ember);
 }
 
 .step h4 {
@@ -674,7 +675,7 @@
   padding: 36px 32px;
   border-radius: 24px;
   background: var(--surface);
-  border: 1px solid rgba(99, 241, 255, 0.22);
+  border: 1px solid rgba(99, 241, 255, 0.26);
   box-shadow: var(--soft-shadow);
   position: relative;
   overflow: hidden;
@@ -703,7 +704,7 @@
 }
 
 .signal-head h2 {
-  font-family: "Oxanium", "Fraunces", serif;
+  font-family: var(--font-display);
   font-size: 2rem;
   margin-bottom: 6px;
 }
@@ -722,8 +723,8 @@
 .signal-card {
   padding: 18px 16px;
   border-radius: 18px;
-  border: 1px solid rgba(99, 241, 255, 0.2);
-  background: rgba(10, 16, 24, 0.7);
+  border: 1px solid rgba(99, 241, 255, 0.22);
+  background: rgba(10, 16, 24, 0.75);
   position: relative;
   overflow: hidden;
   transition: transform 180ms ease, box-shadow 180ms ease;
@@ -756,7 +757,7 @@
 }
 
 .signal-card h4 {
-  font-family: "Oxanium", "Fraunces", serif;
+  font-family: var(--font-display);
   margin: 8px 0 6px;
   font-size: 1.1rem;
 }
@@ -767,8 +768,8 @@
 }
 
 .signal-card.accent {
-  background: rgba(99, 241, 255, 0.12);
-  border-color: rgba(99, 241, 255, 0.35);
+  background: rgba(99, 241, 255, 0.14);
+  border-color: rgba(255, 180, 84, 0.45);
 }
 
 .landing-social {
@@ -781,7 +782,7 @@
 }
 
 .landing-social h2 {
-  font-family: "Oxanium", "Fraunces", serif;
+  font-family: var(--font-display);
   font-size: 2.2rem;
   margin-bottom: 8px;
 }
@@ -798,14 +799,14 @@
 .social-card {
   padding: 18px 20px;
   border-radius: 18px;
-  background: var(--surface);
-  border: 1px solid rgba(99, 241, 255, 0.18);
+  background: rgba(12, 18, 28, 0.92);
+  border: 1px solid rgba(99, 241, 255, 0.22);
   box-shadow: var(--soft-shadow);
 }
 
 .social-card span {
   display: block;
-  font-family: "Oxanium", "Fraunces", serif;
+  font-family: var(--font-display);
   font-size: 1.1rem;
   margin-bottom: 8px;
 }
@@ -815,8 +816,8 @@
   margin: 0 auto;
   padding: 36px 32px;
   border-radius: 26px;
-  background: linear-gradient(120deg, rgba(99, 241, 255, 0.18), rgba(12, 18, 28, 0.95));
-  border: 1px solid rgba(99, 241, 255, 0.28);
+  background: linear-gradient(120deg, rgba(99, 241, 255, 0.22), rgba(255, 180, 84, 0.16), rgba(12, 18, 28, 0.96));
+  border: 1px solid rgba(99, 241, 255, 0.32);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -873,7 +874,7 @@
 
 
 .landing-final h2 {
-  font-family: "Oxanium", "Fraunces", serif;
+  font-family: var(--font-display);
   margin: 0 0 8px;
 }
 

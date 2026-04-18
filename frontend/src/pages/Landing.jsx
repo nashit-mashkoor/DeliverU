@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import './Landing.css'
 
 function Landing() {
@@ -14,15 +15,15 @@ function Landing() {
       </div>
 
       <header className="landing-hero">
-        <nav className="landing-nav">
-          <div className="landing-brand">DeliverU</div>
-          <div className="landing-nav-links">
-            <span>Routes</span>
-            <span>How it works</span>
-            <span>Campus</span>
-          </div>
-          <button className="landing-button ghost" type="button">Log in</button>
-        </nav>
+          <nav className="landing-nav">
+            <div className="landing-brand">DeliverU</div>
+            <div className="landing-nav-links">
+              <a href="#routes">Routes</a>
+              <a href="#workflow">How it works</a>
+              <a href="#signal">Signal</a>
+            </div>
+            <Link className="landing-button ghost" to="/login">Log in</Link>
+          </nav>
 
         <div className="landing-hero-grid">
           <div className="landing-hero-copy">
@@ -41,8 +42,8 @@ function Landing() {
               <span>Transparent pricing</span>
             </div>
             <div className="landing-actions">
-              <button className="landing-button" type="button">Sign up</button>
-              <button className="landing-button secondary" type="button">Log in</button>
+              <Link className="landing-button" to="/register">Sign up</Link>
+              <Link className="landing-button secondary" to="/login">Log in</Link>
             </div>
             <div className="landing-stats">
               <div>
@@ -91,7 +92,7 @@ function Landing() {
         </div>
       </header>
 
-      <section className="landing-route reveal" style={{ '--delay': '80ms' }}>
+      <section id="routes" className="landing-route reveal" style={{ '--delay': '80ms' }}>
         <div className="section-label">Route 01</div>
         <div>
           <h2>One loop, fewer miles.</h2>
@@ -131,7 +132,7 @@ function Landing() {
         </article>
       </section>
 
-      <section className="landing-steps reveal" style={{ '--delay': '220ms' }}>
+      <section id="workflow" className="landing-steps reveal" style={{ '--delay': '220ms' }}>
         <div className="section-label">Workflow</div>
         <div className="steps-head">
           <h2>How it works</h2>
@@ -156,7 +157,7 @@ function Landing() {
         </div>
       </section>
 
-      <section className="landing-signal reveal" style={{ '--delay': '260ms' }}>
+      <section id="signal" className="landing-signal reveal" style={{ '--delay': '260ms' }}>
         <div className="section-label">Live rounds</div>
         <div className="signal-head">
           <h2>Signal board</h2>
@@ -211,8 +212,8 @@ function Landing() {
           <p>Choose a slot, build your list, and let DeliverU run the loop.</p>
         </div>
         <div className="landing-actions">
-          <button className="landing-button" type="button">Sign up</button>
-          <button className="landing-button secondary" type="button">Log in</button>
+          <Link className="landing-button" to="/register">Sign up</Link>
+          <Link className="landing-button secondary" to="/login">Log in</Link>
         </div>
       </section>
     </div>

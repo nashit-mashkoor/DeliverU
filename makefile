@@ -13,7 +13,7 @@ infra-storage:
 	docker compose --env-file $(ENV_FILE_PATH) --profile infra --profile storage up -d
 
 all:
-	docker compose --env-file $(ENV_FILE_PATH) --profile infra --profile storage --profile app --profile worker --profile web up -d
+	docker compose --env-file $(ENV_FILE_PATH) --profile infra --profile storage --profile app --profile worker --profile web up -d --build
 
 down:
 	docker compose --env-file $(ENV_FILE_PATH) down

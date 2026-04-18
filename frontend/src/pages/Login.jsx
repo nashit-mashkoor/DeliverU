@@ -21,7 +21,7 @@ function Login() {
     try {
       await login(data.email, data.password)
       toast.success('Welcome back!')
-      navigate('/dashboard')
+      navigate('/app/dashboard')
     } catch (error) {
       const message = error.response?.data?.detail || 'Login failed. Please try again.'
       toast.error(message)
@@ -86,4 +86,3 @@ function Login() {
 }
 
 export default Login
-

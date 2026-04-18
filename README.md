@@ -1,6 +1,6 @@
-# MyApp - Full-Stack Platform Template
+# DeliverU - Full-Stack Delivery Platform
 
-A production-ready full-stack platform template with FastAPI backend, React frontend, and containerized infrastructure.
+DeliverU is a production-ready full-stack delivery platform with a FastAPI backend, React frontend, and containerized infrastructure.
 
 ## Features
 
@@ -26,7 +26,7 @@ A production-ready full-stack platform template with FastAPI backend, React fron
 
 1. Clone and enter the project:
    ```bash
-   cd template-app
+   cd DeliverU
    ```
 
 2. Create environment file:
@@ -126,6 +126,10 @@ deliveru/
 ├── makefile                 # Build and deployment commands
 └── restart.sh              # Quick restart script
 ```
+
+## Frontend Design System
+
+The frontend follows the Signal-dark visual system described in `docs/design.md`. Keep all additions aligned to the shared typography, color, motion, and component rules to preserve consistency across the landing page and authenticated app.
 
 ## Adding New Features
 

@@ -1,6 +1,6 @@
-# DeliverU Landing Design Philosophy
+# DeliverU Frontend Design System
 
-This document defines the visual system for the DeliverU landing page. It is a tech-futurist, dark-base aesthetic anchored in signal, routing, and urban network metaphors. All front-end additions should align with this system to keep the experience cohesive.
+This document defines the shared visual system for DeliverU (landing + authenticated app). It is a tech-futurist, dark-base aesthetic anchored in signal, routing, and urban network metaphors. All front-end additions should align with this system to keep the experience cohesive.
 
 ## Core Intent
 
@@ -85,6 +85,26 @@ Route Ribbon:
 Section Labels:
 - Uppercase micro-labels that sit above section content
 - Include a subtle dot marker to reinforce the signal motif
+
+## App-Specific Guidance
+
+App shell (Dashboard/Items/Auth):
+- Navigation sits on a translucent dark bar with cyan outline and active-pill state.
+- User identity shows as a subtle capsule; do not over-emphasize.
+- Page headers use display font with spaced tracking; subcopy is muted and compact.
+
+Forms:
+- Inputs are dark, translucent surfaces with cyan focus ring.
+- Labels are uppercase with high tracking; avoid large, heavy label text.
+- Primary CTAs use electric cyan fill; secondary are outlined.
+
+Modals:
+- Use dark translucent backdrops with blur.
+- Modal panels follow the same outline + glow logic; avoid light panels.
+
+Cards and lists:
+- Default card surfaces use the same translucent dark with thin cyan outline.
+- Status pills use small uppercase labels; green for active, red for inactive.
 
 ## Do / Don’t
 
