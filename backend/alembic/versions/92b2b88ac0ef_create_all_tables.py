@@ -1,8 +1,8 @@
-"""add core deliveru domain schema
+"""create all tables
 
-Revision ID: a7478eab95b0
-Revises: 20260419_0001
-Create Date: 2026-04-19 03:48:20.826737
+Revision ID: 92b2b88ac0ef
+Revises: 
+Create Date: 2026-04-20 04:49:05.334168
 
 """
 from typing import Sequence, Union
@@ -13,8 +13,8 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'a7478eab95b0'
-down_revision: Union[str, None] = '20260419_0001'
+revision: str = '92b2b88ac0ef'
+down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -36,6 +36,19 @@ def upgrade() -> None:
     sa.UniqueConstraint('uuid')
     )
     op.create_index(op.f('ix_region_name'), 'region', ['name'], unique=True)
+    op.create_table('user',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('uuid', sa.String(), nullable=True),
+    sa.Column('email', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('hashed_password', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('is_active', sa.Boolean(), nullable=False),
+    sa.Column('role', sa.String(length=20), server_default='customer', nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), nullable=False),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('email'),
+    sa.UniqueConstraint('uuid')
+    )
     op.create_table('customer_profile',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('uuid', sa.String(), nullable=True),
@@ -112,6 +125,21 @@ def upgrade() -> None:
     )
     op.create_index(op.f('ix_grocery_item_name'), 'grocery_item', ['name'], unique=False)
     op.create_index(op.f('ix_grocery_item_region_id'), 'grocery_item', ['region_id'], unique=False)
+    op.create_table('item',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('uuid', sa.String(), nullable=True),
+    sa.Column('name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('description', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('is_active', sa.Boolean(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), nullable=False),
+    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('uuid')
+    )
+    op.create_index(op.f('ix_item_name'), 'item', ['name'], unique=False)
+    op.create_index(op.f('ix_item_user_id'), 'item', ['user_id'], unique=False)
     op.create_table('restaurant',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('uuid', sa.String(), nullable=True),
@@ -318,6 +346,9 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_restaurant_region_id'), table_name='restaurant')
     op.drop_index(op.f('ix_restaurant_name'), table_name='restaurant')
     op.drop_table('restaurant')
+    op.drop_index(op.f('ix_item_user_id'), table_name='item')
+    op.drop_index(op.f('ix_item_name'), table_name='item')
+    op.drop_table('item')
     op.drop_index(op.f('ix_grocery_item_region_id'), table_name='grocery_item')
     op.drop_index(op.f('ix_grocery_item_name'), table_name='grocery_item')
     op.drop_table('grocery_item')
@@ -332,6 +363,7 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_customer_profile_region_id'), table_name='customer_profile')
     op.drop_index(op.f('ix_customer_profile_phone_number'), table_name='customer_profile')
     op.drop_table('customer_profile')
+    op.drop_table('user')
     op.drop_index(op.f('ix_region_name'), table_name='region')
     op.drop_table('region')
     # ### end Alembic commands ###
