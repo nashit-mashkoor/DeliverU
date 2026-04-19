@@ -1,9 +1,8 @@
-from typing import List
+from sqlalchemy import func
+from sqlmodel import select
 
-from fastapi import HTTPException, status
-
-from backend.database.crud import AsyncSessionLocal
 from backend.database.models import Item
+from backend.database.session import AsyncSessionLocal
 from backend.modules.items.item_dto import (
     ItemCreateRequest,
     ItemListResponse,
@@ -25,12 +24,8 @@ class ItemService:
         logger.info("Creating new item", extra={"user_id": user_id, "name": request.name})
 
         async with AsyncSessionLocal() as session:
-            item = await Item.create(
-                session,
-                name=request.name,
-                description=request.description,
-                user_id=user_id,
-            )
+            item = Item(name=request.name, description=request.description, user_id=user_id)
+            session.add(item)
             await session.commit()
             await session.refresh(item)
 
@@ -48,12 +43,11 @@ class ItemService:
     async def get_item(self, user_id: int, item_uuid: str) -> ItemResponse:
         """Get an item by UUID"""
         async with AsyncSessionLocal() as session:
-            items = await Item.filter(session, uuid=item_uuid, user_id=user_id)
+            result = await session.execute(select(Item).where(Item.uuid == item_uuid, Item.user_id == user_id))
+            item = result.scalar_one_or_none()
 
-            if not items:
+            if not item:
                 raise NotFoundError("Item", item_uuid)
-
-            item = items[0]
 
             return ItemResponse(
                 uuid=item.uuid,
@@ -67,11 +61,16 @@ class ItemService:
     async def list_items(self, user_id: int, limit: int = 100, offset: int = 0) -> ItemListResponse:
         """List all items for a user with pagination"""
         async with AsyncSessionLocal() as session:
-            items = await Item.filter(session, user_id=user_id)
-            total = len(items)
-
-            # Apply pagination
-            paginated_items = items[offset : offset + limit]
+            total_result = await session.execute(select(func.count()).select_from(Item).where(Item.user_id == user_id))
+            total = int(total_result.scalar_one())
+            items_result = await session.execute(
+                select(Item)
+                .where(Item.user_id == user_id)
+                .order_by(Item.created_at.desc(), Item.id.desc())
+                .offset(offset)
+                .limit(limit)
+            )
+            items = list(items_result.scalars().all())
 
             return ItemListResponse(
                 items=[
@@ -83,7 +82,7 @@ class ItemService:
                         created_at=item.created_at,
                         updated_at=item.updated_at,
                     )
-                    for item in paginated_items
+                    for item in items
                 ],
                 total=total,
                 limit=limit,
@@ -95,12 +94,11 @@ class ItemService:
         logger.info("Updating item", extra={"user_id": user_id, "item_uuid": item_uuid})
 
         async with AsyncSessionLocal() as session:
-            items = await Item.filter(session, uuid=item_uuid, user_id=user_id)
+            result = await session.execute(select(Item).where(Item.uuid == item_uuid, Item.user_id == user_id))
+            item = result.scalar_one_or_none()
 
-            if not items:
+            if not item:
                 raise NotFoundError("Item", item_uuid)
-
-            item = items[0]
 
             # Update fields that were provided
             update_data = request.model_dump(exclude_unset=True)
@@ -127,15 +125,14 @@ class ItemService:
         logger.info("Deleting item", extra={"user_id": user_id, "item_uuid": item_uuid})
 
         async with AsyncSessionLocal() as session:
-            items = await Item.filter(session, uuid=item_uuid, user_id=user_id)
+            result = await session.execute(select(Item).where(Item.uuid == item_uuid, Item.user_id == user_id))
+            item = result.scalar_one_or_none()
 
-            if not items:
+            if not item:
                 raise NotFoundError("Item", item_uuid)
 
-            item = items[0]
             await session.delete(item)
             await session.commit()
 
             logger.info("Item deleted successfully", extra={"item_uuid": item_uuid})
             return {"message": "Item deleted successfully"}
-

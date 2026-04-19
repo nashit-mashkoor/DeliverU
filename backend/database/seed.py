@@ -5,7 +5,6 @@ from datetime import time
 
 from sqlmodel import select
 
-from backend.database.crud import AsyncSessionLocal
 from backend.database.models import (
     CustomerProfile,
     DeliverySlot,
@@ -17,7 +16,8 @@ from backend.database.models import (
     User,
     UserRole,
 )
-from backend.services.auth import AuthService
+from backend.database.session import AsyncSessionLocal
+from backend.services.security import AuthService
 
 
 @dataclass
@@ -210,7 +210,13 @@ async def seed() -> None:
         )
         assignment = assignment_result.scalar_one_or_none()
         if assignment is None:
-            session.add(RegionDriverAssignment(region_id=region.id, driver_profile_id=driver_profile.id, is_active=True))
+            session.add(
+                RegionDriverAssignment(
+                    region_id=region.id,
+                    driver_profile_id=driver_profile.id,
+                    is_active=True,
+                )
+            )
             result.created += 1
         else:
             assignment.is_active = True

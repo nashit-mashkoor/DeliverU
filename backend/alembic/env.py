@@ -1,19 +1,18 @@
 from logging.config import fileConfig
 
-from alembic import context
-from sqlalchemy import engine_from_config, pool
-
+from backend.constants import DATABASE_URL
 from backend.database.models import *  # noqa: F401, F403
+from sqlalchemy import engine_from_config, pool
+from sqlmodel import SQLModel
+
+from alembic import context
 
 config = context.config
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-from backend.constants import DATABASE_URL
-from backend.database.crud import EasyModel
-
-target_metadata = EasyModel.metadata
+target_metadata = SQLModel.metadata
 DATABASE_URL_SYNC = DATABASE_URL.replace("asyncpg", "psycopg2")
 config.set_main_option("sqlalchemy.url", str(DATABASE_URL_SYNC))
 
@@ -58,4 +57,3 @@ if context.is_offline_mode():
     run_migrations_offline()
 else:
     run_migrations_online()
-

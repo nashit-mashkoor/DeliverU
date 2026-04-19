@@ -5,8 +5,7 @@ from sqlalchemy import create_engine, text
 
 from backend.constants import DATABASE_URL
 from backend.database.models import UserRole
-from backend.services.auth import AuthService
-
+from backend.services.security import AuthService
 
 AUTH_BASE = "/api/v1/auth"
 

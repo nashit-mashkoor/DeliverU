@@ -9,7 +9,7 @@ from backend.modules.items.item_dto import (
     ItemUpdateRequest,
 )
 from backend.modules.items.item_service import ItemService
-from backend.services.auth import JWTBearer
+from backend.services.security import JWTBearer
 
 item_router = APIRouter(prefix="/api/v1/items", tags=["Items"])
 item_service = ItemService()
@@ -50,4 +50,3 @@ async def update_item(
 async def delete_item(item_uuid: str, current_user: dict = Depends(security)) -> Dict[str, str]:
     """Delete an item."""
     return await item_service.delete_item(user_id=current_user["user_id"], item_uuid=item_uuid)
-

@@ -5,10 +5,12 @@ from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.constants import ACCESS_TOKEN_EXPIRE_MINUTES, JWT_ALGORITHM, JWT_SECRET_KEY, REFRESH_TOKEN_EXPIRE_DAYS
-from backend.database.crud import AsyncSessionLocal
 from backend.database.models import User, UserRole
+from backend.database.session import get_db
+from backend.modules.auth.auth_repository import AuthRepository
 from backend.utils.exceptions import AuthenticationError
 from backend.utils.logging import Logging
 
@@ -81,37 +83,6 @@ class AuthService:
             raise AuthenticationError(f"Invalid token: {str(e)}")
 
     @staticmethod
-    async def authenticate_user(email: str, password: str) -> Optional[User]:
-        """Authenticate a user by email and password"""
-        async with AsyncSessionLocal() as session:
-            users = await User.filter(session, email=email)
-            if not users:
-                return None
-
-            user = users[0]
-            if not AuthService.verify_password(password, user.hashed_password):
-                return None
-
-            return user
-
-    @staticmethod
-    async def create_user(email: str, password: str, role: UserRole = UserRole.CUSTOMER) -> User:
-        """Create a new user"""
-        hashed_password = AuthService.get_password_hash(password)
-
-        async with AsyncSessionLocal() as session:
-            existing_users = await User.filter(session, email=email)
-            if existing_users:
-                raise ValueError(f"User with email {email} already exists")
-
-            user = await User.create(session, email=email, hashed_password=hashed_password, role=role)
-            await session.commit()
-            await session.refresh(user)
-
-            logger.info(f"Created new user: {email}")
-            return user
-
-    @staticmethod
     def _normalize_datetime(value: datetime) -> datetime:
         """Normalize datetime to UTC-naive for consistent comparisons."""
         if value.tzinfo is not None:
@@ -147,17 +118,6 @@ class AuthService:
         user_updated_at = AuthService._normalize_datetime(user.updated_at)
         return int(token_iat.timestamp()) < int(user_updated_at.timestamp())
 
-    @staticmethod
-    async def invalidate_user_tokens(user_id: int) -> None:
-        """Invalidate all existing JWTs for a user by bumping updated_at."""
-        async with AsyncSessionLocal() as session:
-            user = await User.get_by_id(session, user_id)
-            if not user:
-                return
-
-            await User.update_by_id(session, user_id, updated_at=datetime.utcnow() + timedelta(seconds=1))
-            await session.commit()
-
 
 class JWTBearer(HTTPBearer):
     """JWT Bearer authentication dependency"""
@@ -165,7 +125,7 @@ class JWTBearer(HTTPBearer):
     def __init__(self, auto_error: bool = True):
         super(JWTBearer, self).__init__(auto_error=auto_error)
 
-    async def __call__(self, request: Request) -> Dict[str, Any]:
+    async def __call__(self, request: Request, session: AsyncSession = Depends(get_db)) -> Dict[str, Any]:
         credentials: HTTPAuthorizationCredentials = await super(JWTBearer, self).__call__(request)
         if credentials:
             if not credentials.scheme == "Bearer":
@@ -175,26 +135,28 @@ class JWTBearer(HTTPBearer):
             if not payload:
                 raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid token or expired token.")
 
-            async with AsyncSessionLocal() as session:
-                users = await User.filter(session, email=payload.get("sub"))
-                if not users:
-                    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+            subject = payload.get("sub")
+            if not isinstance(subject, str) or not subject:
+                raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token subject")
 
-                user = users[0]
-                if not user.is_active:
-                    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Inactive user")
+            user = await AuthRepository.get_user_by_email(session, subject)
+            if not user:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-                if AuthService.is_token_invalidated(payload, user):
-                    raise HTTPException(
-                        status_code=status.HTTP_401_UNAUTHORIZED,
-                        detail="Token has been invalidated. Please login again.",
-                    )
+            if not user.is_active:
+                raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Inactive user")
 
-                return {
-                    "user_id": user.id,
-                    "email": user.email,
-                    "role": AuthService.get_role_value(user.role),
-                }
+            if AuthService.is_token_invalidated(payload, user):
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Token has been invalidated. Please login again.",
+                )
+
+            return {
+                "user_id": user.id,
+                "email": user.email,
+                "role": AuthService.get_role_value(user.role),
+            }
         else:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid authorization code.")
 

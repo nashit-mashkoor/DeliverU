@@ -4,9 +4,7 @@ from typing import List, Optional
 from uuid import uuid4
 
 from sqlalchemy import JSON, Column, Numeric, String, UniqueConstraint
-from sqlmodel import Field, Relationship
-
-from backend.database.crud import EasyModel
+from sqlmodel import Field, Relationship, SQLModel
 
 
 class UserRole(str, Enum):
@@ -38,7 +36,7 @@ class LedgerEntryType(str, Enum):
     ADJUSTMENT = "adjustment"
 
 
-class User(EasyModel, table=True):
+class User(SQLModel, table=True):
     """User table for authentication"""
 
     __tablename__ = "user"
@@ -63,7 +61,7 @@ class User(EasyModel, table=True):
     recurring_templates: List["RecurringOrderTemplate"] = Relationship(back_populates="customer")
 
 
-class Region(EasyModel, table=True):
+class Region(SQLModel, table=True):
     """Service region represented by a bounding box."""
 
     __tablename__ = "region"
@@ -89,7 +87,7 @@ class Region(EasyModel, table=True):
     driver_assignments: List["RegionDriverAssignment"] = Relationship(back_populates="region")
 
 
-class CustomerProfile(EasyModel, table=True):
+class CustomerProfile(SQLModel, table=True):
     """Extended customer profile and serviceability details."""
 
     __tablename__ = "customer_profile"
@@ -111,7 +109,7 @@ class CustomerProfile(EasyModel, table=True):
     region: Optional[Region] = Relationship(back_populates="customer_profiles")
 
 
-class DriverProfile(EasyModel, table=True):
+class DriverProfile(SQLModel, table=True):
     """Extended driver profile details."""
 
     __tablename__ = "driver_profile"
@@ -136,7 +134,7 @@ class DriverProfile(EasyModel, table=True):
     proof_uploads: List["ProofAttachment"] = Relationship(back_populates="uploaded_by_driver")
 
 
-class DeliverySlot(EasyModel, table=True):
+class DeliverySlot(SQLModel, table=True):
     """Recurring daily delivery slot template per region."""
 
     __tablename__ = "delivery_slot"
@@ -162,7 +160,7 @@ class DeliverySlot(EasyModel, table=True):
     recurring_templates: List["RecurringOrderTemplate"] = Relationship(back_populates="slot")
 
 
-class RegionDriverAssignment(EasyModel, table=True):
+class RegionDriverAssignment(SQLModel, table=True):
     """Many-to-many region/driver assignment table."""
 
     __tablename__ = "region_driver_assignment"
@@ -182,7 +180,7 @@ class RegionDriverAssignment(EasyModel, table=True):
     driver_profile: DriverProfile = Relationship(back_populates="region_assignments")
 
 
-class GroceryItem(EasyModel, table=True):
+class GroceryItem(SQLModel, table=True):
     """Region-specific grocery catalog item."""
 
     __tablename__ = "grocery_item"
@@ -201,7 +199,7 @@ class GroceryItem(EasyModel, table=True):
     order_items: List["OrderItem"] = Relationship(back_populates="grocery_item")
 
 
-class Restaurant(EasyModel, table=True):
+class Restaurant(SQLModel, table=True):
     """Region-specific restaurant information for MVP free-text ordering."""
 
     __tablename__ = "restaurant"
@@ -224,7 +222,7 @@ class Restaurant(EasyModel, table=True):
     recurring_templates: List["RecurringOrderTemplate"] = Relationship(back_populates="restaurant")
 
 
-class Order(EasyModel, table=True):
+class Order(SQLModel, table=True):
     """Customer order for a selected region slot."""
 
     __tablename__ = "order"
@@ -260,7 +258,7 @@ class Order(EasyModel, table=True):
     ledger_entries: List["DriverLedgerEntry"] = Relationship(back_populates="order")
 
 
-class OrderItem(EasyModel, table=True):
+class OrderItem(SQLModel, table=True):
     """Individual grocery item line within an order."""
 
     __tablename__ = "order_item"
@@ -280,7 +278,7 @@ class OrderItem(EasyModel, table=True):
     grocery_item: Optional[GroceryItem] = Relationship(back_populates="order_items")
 
 
-class Complaint(EasyModel, table=True):
+class Complaint(SQLModel, table=True):
     """Customer complaints linked to orders and operations context."""
 
     __tablename__ = "complaint"
@@ -307,7 +305,7 @@ class Complaint(EasyModel, table=True):
     region: Optional[Region] = Relationship(back_populates="complaints")
 
 
-class DriverLedgerEntry(EasyModel, table=True):
+class DriverLedgerEntry(SQLModel, table=True):
     """Unified driver ledger for payable, receivable, and adjustments."""
 
     __tablename__ = "driver_ledger_entry"
@@ -329,7 +327,7 @@ class DriverLedgerEntry(EasyModel, table=True):
     order: Optional[Order] = Relationship(back_populates="ledger_entries")
 
 
-class ProofAttachment(EasyModel, table=True):
+class ProofAttachment(SQLModel, table=True):
     """File metadata for delivery proof uploads."""
 
     __tablename__ = "proof_attachment"
@@ -348,7 +346,7 @@ class ProofAttachment(EasyModel, table=True):
     uploaded_by_driver: DriverProfile = Relationship(back_populates="proof_uploads")
 
 
-class RecurringOrderTemplate(EasyModel, table=True):
+class RecurringOrderTemplate(SQLModel, table=True):
     """Recurring order definition for daily generation jobs."""
 
     __tablename__ = "recurring_order_template"
@@ -376,7 +374,7 @@ class RecurringOrderTemplate(EasyModel, table=True):
     restaurant: Optional[Restaurant] = Relationship(back_populates="recurring_templates")
 
 
-class Item(EasyModel, table=True):
+class Item(SQLModel, table=True):
     """Legacy sample item table retained during early migration"""
 
     __tablename__ = "item"
