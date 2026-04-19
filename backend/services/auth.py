@@ -8,7 +8,7 @@ from passlib.context import CryptContext
 
 from backend.constants import ACCESS_TOKEN_EXPIRE_MINUTES, JWT_ALGORITHM, JWT_SECRET_KEY, REFRESH_TOKEN_EXPIRE_DAYS
 from backend.database.crud import AsyncSessionLocal
-from backend.database.models import User
+from backend.database.models import User, UserRole
 from backend.utils.exceptions import AuthenticationError
 from backend.utils.logging import Logging
 
@@ -55,6 +55,12 @@ class AuthService:
         return encoded_jwt
 
     @staticmethod
+    def get_role_value(role: UserRole | str) -> str:
+        if isinstance(role, UserRole):
+            return role.value
+        return role
+
+    @staticmethod
     def create_refresh_token(data: Dict[str, Any]) -> str:
         """Create a JWT refresh token"""
         to_encode = data.copy()
@@ -87,7 +93,7 @@ class AuthService:
             return user
 
     @staticmethod
-    async def create_user(email: str, password: str, is_superuser: bool = False) -> User:
+    async def create_user(email: str, password: str, role: UserRole = UserRole.CUSTOMER) -> User:
         """Create a new user"""
         hashed_password = AuthService.get_password_hash(password)
 
@@ -96,7 +102,7 @@ class AuthService:
             if existing_users:
                 raise ValueError(f"User with email {email} already exists")
 
-            user = await User.create(session, email=email, hashed_password=hashed_password, is_superuser=is_superuser)
+            user = await User.create(session, email=email, hashed_password=hashed_password, role=role)
             await session.commit()
             await session.refresh(user)
 
@@ -129,7 +135,11 @@ class JWTBearer(HTTPBearer):
                 if not user.is_active:
                     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Inactive user")
 
-                return {"user_id": user.id, "email": user.email, "is_superuser": user.is_superuser}
+                return {
+                    "user_id": user.id,
+                    "email": user.email,
+                    "role": AuthService.get_role_value(user.role),
+                }
         else:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid authorization code.")
 
@@ -143,15 +153,22 @@ class JWTBearer(HTTPBearer):
             return None
 
 
-def require_superuser(current_user: Dict[str, Any] = Depends(JWTBearer())) -> Dict[str, Any]:
+def require_admin(current_user: Dict[str, Any] = Depends(JWTBearer())) -> Dict[str, Any]:
     """Allow access only to admin users."""
-    if not current_user.get("is_superuser", False):
+    if current_user.get("role") != UserRole.ADMIN.value:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Admin access required")
     return current_user
 
 
 def require_customer(current_user: Dict[str, Any] = Depends(JWTBearer())) -> Dict[str, Any]:
-    """Allow access only to non-admin customer users."""
-    if current_user.get("is_superuser", False):
+    """Allow access only to customer users."""
+    if current_user.get("role") != UserRole.CUSTOMER.value:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Customer access required")
+    return current_user
+
+
+def require_driver(current_user: Dict[str, Any] = Depends(JWTBearer())) -> Dict[str, Any]:
+    """Allow access only to driver users."""
+    if current_user.get("role") != UserRole.DRIVER.value:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Driver access required")
     return current_user

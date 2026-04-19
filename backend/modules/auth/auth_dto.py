@@ -1,7 +1,8 @@
 from datetime import datetime
-from typing import Optional
 
-from pydantic import BaseModel, EmailStr, Field, validator
+from pydantic import BaseModel, EmailStr, Field, field_validator
+
+from backend.database.models import UserRole
 
 
 class UserRegisterRequest(BaseModel):
@@ -11,14 +12,17 @@ class UserRegisterRequest(BaseModel):
     password: str = Field(..., min_length=8)
     password_confirm: str
 
-    @validator("password_confirm")
-    def passwords_match(cls, v, values):
-        if "password" in values and v != values["password"]:
+    @field_validator("password_confirm")
+    @classmethod
+    def passwords_match(cls, v: str, info) -> str:
+        password = info.data.get("password")
+        if password and v != password:
             raise ValueError("Passwords do not match")
         return v
 
-    @validator("password")
-    def password_strength(cls, v):
+    @field_validator("password")
+    @classmethod
+    def password_strength(cls, v: str) -> str:
         if not any(char.isdigit() for char in v):
             raise ValueError("Password must contain at least one digit")
         if not any(char.isupper() for char in v):
@@ -33,6 +37,25 @@ class UserLoginRequest(BaseModel):
 
     email: EmailStr
     password: str
+
+
+class AdminCreateUserRequest(BaseModel):
+    """Request model for admin-created user accounts."""
+
+    email: EmailStr
+    password: str = Field(..., min_length=8)
+    role: UserRole
+
+    @field_validator("password")
+    @classmethod
+    def password_strength(cls, v: str) -> str:
+        if not any(char.isdigit() for char in v):
+            raise ValueError("Password must contain at least one digit")
+        if not any(char.isupper() for char in v):
+            raise ValueError("Password must contain at least one uppercase letter")
+        if not any(char.islower() for char in v):
+            raise ValueError("Password must contain at least one lowercase letter")
+        return v
 
 
 class TokenResponse(BaseModel):
@@ -57,7 +80,7 @@ class UserResponse(BaseModel):
     uuid: str
     email: EmailStr
     is_active: bool
-    is_superuser: bool
+    role: UserRole
     created_at: datetime
     updated_at: datetime
 
@@ -69,14 +92,17 @@ class ChangePasswordRequest(BaseModel):
     new_password: str = Field(..., min_length=8)
     new_password_confirm: str
 
-    @validator("new_password_confirm")
-    def passwords_match(cls, v, values):
-        if "new_password" in values and v != values["new_password"]:
+    @field_validator("new_password_confirm")
+    @classmethod
+    def passwords_match(cls, v: str, info) -> str:
+        new_password = info.data.get("new_password")
+        if new_password and v != new_password:
             raise ValueError("Passwords do not match")
         return v
 
-    @validator("new_password")
-    def password_strength(cls, v):
+    @field_validator("new_password")
+    @classmethod
+    def password_strength(cls, v: str) -> str:
         if not any(char.isdigit() for char in v):
             raise ValueError("Password must contain at least one digit")
         if not any(char.isupper() for char in v):
@@ -84,4 +110,3 @@ class ChangePasswordRequest(BaseModel):
         if not any(char.islower() for char in v):
             raise ValueError("Password must contain at least one lowercase letter")
         return v
-

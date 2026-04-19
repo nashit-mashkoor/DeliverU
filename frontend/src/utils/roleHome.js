@@ -14,7 +14,7 @@ export function getUserRole(user) {
     return role
   }
 
-  return user.is_superuser ? 'admin' : 'customer'
+  return 'customer'
 }
 
 export function getRoleHomePath(user) {

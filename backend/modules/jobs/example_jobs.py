@@ -3,7 +3,7 @@
 import asyncio
 from typing import Any, Dict
 
-from backend.broker import broker
+from backend.services.runtime.broker import broker
 from backend.utils.logging import Logging
 
 logging_instance = Logging()
@@ -69,4 +69,3 @@ async def send_notification(user_id: int, message: str) -> Dict[str, Any]:
         "message": message,
         "status": "sent",
     }
-

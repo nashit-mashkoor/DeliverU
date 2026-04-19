@@ -23,7 +23,6 @@ tmp
 
 # Environment
 .env
-.env.local
 
 # Testing
 .pytest_cache/
@@ -51,4 +50,3 @@ frontend/dist/
 data/
 *.db
 *.sqlite
-

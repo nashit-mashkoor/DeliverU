@@ -32,13 +32,13 @@ DeliverU is a production-ready full-stack delivery platform with a FastAPI backe
 2. Create environment file:
    ```bash
    cp .env.example .env
-   # Edit .env with your settings
+   # Edit values if needed
    ```
 
 3. Start all services:
    ```bash
-   make up
-   # or: docker compose up -d
+   make all
+   # or: make infra   (infra only)
    ```
 
 4. Access the application:
@@ -76,6 +76,9 @@ make migration msg="Add new table"
 
 # Apply migrations
 make migrate
+
+# Seed one complete dev bootstrap set
+make seed
 ```
 
 ### Frontend Development
@@ -88,9 +91,13 @@ npm run dev
 
 ### Environment Files
 
-- Default env file is `.env`.
-- Override for any Make target with `ENV_FILE=/path/to/.env.dev`.
-- Docker Compose targets also honor `ENV_FILE`.
+- Use a single env file: `.env` (copy from `.env.example`).
+- Update all variables in `.env` as your single source of truth.
+- Local app commands use `DATABASE_URL`, `REDIS_URL`, `MINIO_ENDPOINT`.
+- Docker app/worker use `DOCKER_DATABASE_URL`, `DOCKER_REDIS_URL`, `DOCKER_MINIO_ENDPOINT` from the same `.env`.
+- PgBouncer uses `PGBOUNCER_DATABASE_URL` from the same `.env`.
+- You can still override with `ENV_FILE=/path/to/file` for any Make target.
+- Seed defaults can be overridden with env vars such as `SEED_ADMIN_EMAIL`, `SEED_CUSTOMER_EMAIL`, `SEED_DRIVER_EMAIL`, and `SEED_DEFAULT_PASSWORD`.
 
 ## Project Structure
 
@@ -99,15 +106,17 @@ deliveru/
 ├── backend/                  # Backend application
 │   ├── main.py              # FastAPI entry point
 │   ├── constants.py         # Configuration
-│   ├── broker.py            # TaskIQ broker
 │   ├── database/            # Database layer
 │   │   ├── models.py        # SQLModel models
-│   │   └── crud.py          # Base CRUD operations
+│   │   ├── crud.py          # Base CRUD operations
+│   │   └── seed.py          # Dev seed bootstrap script
 │   ├── modules/             # Feature modules
 │   │   ├── auth/            # Authentication
 │   │   ├── items/           # Legacy sample module (kept inactive during migration)
 │   │   └── jobs/            # Background jobs
-│   ├── services/            # Shared services
+│   ├── services/            # Shared and runtime services
+│   │   ├── auth.py          # Authentication helpers
+│   │   └── runtime/         # Broker and Redis runtime clients
 │   ├── utils/               # Utilities
 │   ├── alembic/            # Database migrations
 │   ├── alembic.ini          # Alembic configuration
@@ -124,7 +133,9 @@ deliveru/
 │   └── nginx.conf           # Nginx configuration
 ├── docker-compose.yml       # Infrastructure
 ├── makefile                 # Build and deployment commands
-└── restart.sh              # Quick restart script
+└── scripts/
+    ├── seed.sh              # DB seed wrapper script
+    └── restart.sh          # Quick restart script
 ```
 
 ## Frontend Design System

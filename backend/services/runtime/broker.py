@@ -30,4 +30,3 @@ async def startup() -> None:
 async def shutdown() -> None:
     """Broker shutdown hook"""
     logger.info("TaskIQ broker shutting down")
-

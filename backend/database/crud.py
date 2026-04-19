@@ -140,7 +140,5 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 
 
 async def init_models() -> None:
-    """Initialize database models"""
-    async with async_engine.begin() as conn:
-        await conn.run_sync(SQLModel.metadata.create_all)
-
+    """Deprecated bootstrap helper; use Alembic migrations instead."""
+    raise RuntimeError("Database initialization must run through Alembic migrations (make migrate)")

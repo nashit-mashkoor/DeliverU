@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, Header, HTTPException, status
 from jose import ExpiredSignatureError
 
 from backend.modules.auth.auth_dto import (
+    AdminCreateUserRequest,
     ChangePasswordRequest,
     RefreshTokenResponse,
     TokenResponse,
@@ -12,7 +13,7 @@ from backend.modules.auth.auth_dto import (
     UserResponse,
 )
 from backend.modules.auth.auth_service import AuthenticationService
-from backend.services.auth import AuthService, JWTBearer
+from backend.services.auth import AuthService, JWTBearer, require_admin
 from backend.utils.logging import Logging
 
 logging_instance = Logging()
@@ -57,6 +58,7 @@ async def refresh_token(authorization: str = Header(...)) -> RefreshTokenRespons
                 "sub": payload.get("sub"),
                 "user_id": payload.get("user_id"),
                 "user_uuid": payload.get("user_uuid"),
+                "role": payload.get("role"),
             }
         )
 
@@ -95,3 +97,11 @@ async def deactivate_account(current_user: dict = Depends(security)) -> Dict[str
     """Deactivate the current user's account."""
     return await auth_service.deactivate_user(current_user["user_id"])
 
+
+@auth_router.post("/admin/users", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+async def create_user_from_admin(
+    request: AdminCreateUserRequest,
+    _: dict = Depends(require_admin),
+) -> UserResponse:
+    """Create admin or driver users from an authenticated admin session."""
+    return await auth_service.create_user_by_admin(request)

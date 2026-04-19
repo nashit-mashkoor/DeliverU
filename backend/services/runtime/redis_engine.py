@@ -30,7 +30,7 @@ def get_async_redis_client() -> AsyncRedis:
 async def redis_close() -> None:
     """Close the Redis connections"""
     try:
-        await async_redis_client.close()
+        await async_redis_client.aclose()
         redis_client.close()
         logger.info("Redis connections closed")
     except Exception as e:
@@ -45,4 +45,3 @@ async def redis_ping() -> bool:
     except Exception as e:
         logger.error(f"Redis ping failed: {e}")
         return False
-

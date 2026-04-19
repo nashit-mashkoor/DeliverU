@@ -12,7 +12,7 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
 from backend.constants import API_PASSWORD, API_USER, FRONTEND_URL, PRODUCTION
 from backend.modules.auth.auth_controller import auth_router
-from backend.redis_engine import redis_close, redis_ping
+from backend.services.runtime.redis_engine import redis_close, redis_ping
 from backend.utils.logging import Logging
 from backend.utils.middlewares import LogRequestsMiddleware
 

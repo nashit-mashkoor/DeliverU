@@ -1732,7 +1732,9 @@ The application shall intimate the user the following disclaimers before the use
 
 **5.3  ER Diagram**
 
-![ER Diagram](imgs/er-diagram.png)
+The legacy ER diagram image has been retired.
+
+Use the maintained implementation ER reference in `docs/er-model.md`.
 
 **5.4 Use Case Diagram**
 

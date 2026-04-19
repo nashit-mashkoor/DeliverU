@@ -38,14 +38,14 @@ This structure prevents two common failures:
 
 ## Current Repo Status
 
-- [X] The repo already contains a usable full-stack template structure with `frontend`, `backend`, Docker, Postgres, Redis, MinIO, TaskIQ, and Alembic.
-- [X] The landing page is implemented, but the authenticated product experience is still mostly template-level.
-- [X] Backend starter modules exist for auth and a sample `items` resource, but the real DeliverU API is not yet active because `/api/v1/*` is currently blocked by a global placeholder in `backend/main.py`.
-- [X] The current database models are still template-level and do not yet represent the actual DeliverU domain from the SRS.
-- [X] The implementation effort should therefore begin by turning the template shell into a real, role-aware DeliverU platform and then moving through the ordered slices below.
-- [X] Replace remaining template naming such as `MyApp`, template dashboard copy, and example-only item language.
-- [X] Remove the `/api/v1/{path:path}` placeholder from `backend/main.py`.
-- [X] Wire real routers into `backend/main.py` starting with auth and then real DeliverU modules.
+- [X] The repo baseline has been transitioned from template shell to DeliverU foundation across backend, frontend, runtime scripts, and docs.
+- [X] Real API routing is active: the `/api/v1/{path:path}` placeholder is removed and auth routes are wired and live.
+- [X] Authentication is role-aware end-to-end (`admin`, `customer`, `driver`) with backend RBAC helpers and frontend role route guards.
+- [X] Core DeliverU domain schema is implemented in models and migrations (users/profiles/regions/slots/assignments/catalog/orders/complaints/ledger/proofs/recurring templates).
+- [X] Database change management is migration-driven; startup uses Alembic and no longer relies on template `create_all()` bootstrap behavior.
+- [X] Seed/bootstrap flow exists and is repeatable via `make seed` for one complete dev set (admin/customer/driver/region/slot/grocery/restaurant).
+- [X] Local and Docker development flows are validated with current env setup, and backend auth/RBAC tests are present and passing.
+- [X] Slice 0 foundation gate (Phases 0-3) is complete and verified; next work should proceed from Slice 3 onward.
 - [ ] Retire the example `items` module once real DeliverU domain modules exist or keep it only if it is repurposed into grocery/catalog code.
 
 ## Ordered Vertical Slices
@@ -71,18 +71,18 @@ Relevant phases:
 
 This is a mandatory prerequisite slice. Do not start Slice 1 until this slice is complete.
 
-- [ ] Complete every checklist item in Phase 0, Phase 1, Phase 2, and Phase 3.
-- [ ] Freeze core decisions: role model, region geometry strategy, slot rules, order statuses, complaint statuses, finance-entry approach, and MVP restaurant order format.
-- [ ] Standardize the project baseline: remove template naming, enforce module structure, and confirm env consistency.
-- [ ] Establish the quality baseline: backend tests, frontend smoke/QA checklist, and repeatable local + Docker development workflows.
-- [ ] Finalize seed-data approach for admin, customer, driver, region, slot, grocery, and restaurant bootstrap.
-- [ ] Implement the full DeliverU domain schema and generate stable Alembic migrations.
-- [ ] Make migration-driven schema changes the source of truth.
-- [ ] Implement role-aware auth end-to-end across signup, login, refresh, logout, me, change-password, and deactivate flows.
-- [ ] Implement authorization rules so access is enforced by role and account state.
-- [ ] Update frontend auth context and guards so role-based entry is working end-to-end.
-- [ ] Add and pass backend auth/RBAC tests including success, failure, inactive-user, and permission-boundary cases.
-- [ ] Verify readiness gate: API routes are active, auth is live, migrations are stable, and seeded data exists for the next slices.
+- [X] Complete every checklist item in Phase 0, Phase 1, Phase 2, and Phase 3.
+- [X] Freeze core decisions: role model, region geometry strategy, slot rules, order statuses, complaint statuses, finance-entry approach, and MVP restaurant order format.
+- [X] Standardize the project baseline: remove template naming, enforce module structure, and confirm env consistency.
+- [X] Establish the quality baseline: backend tests, frontend smoke/QA checklist, and repeatable local + Docker development workflows.
+- [X] Finalize seed-data approach for admin, customer, driver, region, slot, grocery, and restaurant bootstrap.
+- [X] Implement the full DeliverU domain schema and generate stable Alembic migrations.
+- [X] Make migration-driven schema changes the source of truth.
+- [X] Implement role-aware auth end-to-end across signup, login, refresh, logout, me, change-password, and deactivate flows.
+- [X] Implement authorization rules so access is enforced by role and account state.
+- [X] Update frontend auth context and guards so role-based entry is working end-to-end.
+- [X] Add and pass backend auth/RBAC tests including success, failure, inactive-user, and permission-boundary cases.
+- [X] Verify readiness gate: API routes are active, auth is live, migrations are stable, and seeded data exists for the next slices.
 
 ### Slice 1: Platform Enablement
 
@@ -94,8 +94,8 @@ Relevant phases:
 - [X] Remove the global `501` placeholder and enable real API routing in `backend/main.py`.
 - [X] Register working routers and ensure backend serves real endpoints.
 - [X] Clean baseline template naming in backend/frontend entry files.
-- [ ] Ensure local dev and Docker flows run cleanly with current env files.
-- [ ] Confirm the app can boot, serve APIs, and support the next feature slices without template blockers.
+- [X] Ensure local dev and Docker flows run cleanly with current env files.
+- [X] Confirm the app can boot, serve APIs, and support the next feature slices without template blockers.
 
 ### Slice 2: Auth + Role Shell
 
@@ -307,57 +307,82 @@ Relevant phases:
 
 ## Phase 0: Lock Core Decisions
 
-- [ ] Decide user model: single `users` table with role enum (`admin`, `customer`, `driver`) is recommended.
+- [X] Decide user model: single `users` table with role enum (`admin`, `customer`, `driver`).
 - [X] Decide whether customer, driver, and admin use one React app with role-based routing; recommended: yes.
-- [ ] Decide region geometry for MVP; recommended: simple polygon or bounding box first.
-- [ ] Define slot business rules: capacity, cutoff time, lock time, active/inactive state.
-- [ ] Define order statuses: `draft`, `placed`, `locked`, `assigned`, `in_progress`, `completed`, `cancelled`.
-- [ ] Define complaint statuses: `open`, `in_review`, `resolved`, `rejected`.
-- [ ] Define finance entry types for drivers; recommended: unified ledger instead of separate payable/receival tables.
-- [ ] Decide restaurant ordering model for MVP; recommended: restaurant selection plus free-text notes, not full structured menus yet.
-- [ ] Merge duplicate SRS complaint-view requirements into one implementation flow.
+- [X] Decide region geometry for MVP: bounding box.
+- [X] Define slot business rules: `capacity=20`, `order_cutoff_minutes=30`, `edit_cancel_lock_minutes=30`, `is_active` state.
+- [X] Define order statuses: `draft`, `placed`, `locked`, `assigned`, `in_progress`, `completed`, `cancelled`.
+- [X] Define complaint statuses: `open`, `in_review`, `resolved`, `rejected`.
+- [X] Define finance entry types for drivers: unified ledger (`driver_ledger_entries`) instead of separate payable/receival tables.
+- [X] Decide restaurant ordering model for MVP: restaurant selection plus free-text notes (no structured menu modeling yet).
+- [X] Merge duplicate SRS complaint-view requirements into one implementation flow.
+
+### Phase 0 Decision Record (Frozen)
+
+- User/auth model: single `users` table with role enum (`admin`, `customer`, `driver`), with customer self-signup and admin-created driver/admin accounts.
+- Profile model: separate `customer_profiles` and `driver_profiles`; no separate `admin_profiles` in MVP.
+- Serviceability model: region matching uses bounding-box geometry for MVP.
+- Slot model: recurring daily slot templates per region; orders reference selected slots.
+- Slot defaults: `capacity=20`, `order_cutoff_minutes=30`, `edit_cancel_lock_minutes=30`, `is_active=true`.
+- Assignment model: drivers can be assigned to multiple regions via `region_driver_assignments`.
+- Catalog model: groceries are associated with regions.
+- Restaurant MVP model: optional restaurant selection with free-text order details.
+- Recurring order scope: recurring applies to both grocery and restaurant order content.
+- Driver finance model: unified ledger entries in `driver_ledger_entries`.
+- Complaint linkage: `customer_id` required, with optional `order_id`, `driver_id`, and `region_id`.
+- Complaint requirement merge: treat SRS UC-4 and UC-8 as one customer complaint-view flow (list + status + detail) implemented under Phase 8.
+- Proof uploads: driver-uploaded, with customer and admin read access.
+- Seeding strategy: dedicated seed/bootstrap command; initial seed includes one complete usable set.
+- Validation baseline: both local non-Docker and Docker flows must pass.
+- Backend test baseline: PostgreSQL-backed integration tests for auth/RBAC.
+- Frontend test baseline for Slice 0: manual smoke checklist.
+- Legacy handling: keep `items` module inactive for now.
+- Compatibility stance: optimize for a clean DeliverU foundation rather than template backward compatibility.
 
 ## Phase 1: Project Foundation Cleanup
 
-- [ ] Standardize project naming to `DeliverU` across backend metadata, docs, frontend copy, and infra.
-- [ ] Set up a clean backend module pattern for real features: `dto`, `service`, `controller`.
-- [ ] Add a backend test structure with `pytest`.
-- [ ] Add frontend smoke test strategy or at least page-level manual QA checklist.
-- [ ] Confirm environment configuration in `.env.example` is consistent with actual app names and database names.
-- [ ] Ensure local development works with both Docker and non-Docker flows.
-- [ ] Add seed/dev bootstrap data strategy for admin, customer, driver, region, slot, grocery, restaurant.
+- [X] Standardize project naming to `DeliverU` across backend metadata, docs, frontend copy, and infra.
+- [X] Set up a clean backend module pattern for real features: `dto`, `service`, `controller`.
+- [X] Add a backend test structure with `pytest`.
+- [X] Add frontend smoke test strategy or at least page-level manual QA checklist.
+- [X] Confirm environment configuration in `.env.example` is consistent with actual app names and database names.
+- [X] Ensure local development works with both Docker and non-Docker flows.
+- [X] Add seed/dev bootstrap data strategy for admin, customer, driver, region, slot, grocery, restaurant.
 
 ## Phase 2: Core Database Schema and Migrations
 
-- [ ] Design and implement initial domain schema in `backend/database/models.py`.
-- [ ] Create Alembic migrations for the first real schema.
-- [ ] Stop relying on template `create_all()` as the main persistence path once migrations are stable.
+Reference:
+- Current ER model and divergence note: `docs/er-model.md`
 
-- [ ] Implement `users`.
-- [ ] Implement `customer_profiles`.
-- [ ] Implement `driver_profiles`.
-- [ ] Implement `admin_profiles` or admin role fields if a separate profile is unnecessary.
-- [ ] Implement `regions`.
-- [ ] Implement `delivery_slots`.
-- [ ] Implement `region_driver_assignments`.
-- [ ] Implement `grocery_items`.
-- [ ] Implement `restaurants`.
-- [ ] Implement `orders`.
-- [ ] Implement `order_items`.
-- [ ] Implement `complaints`.
-- [ ] Implement `driver_ledger_entries`.
-- [ ] Implement `proof_attachments`.
-- [ ] Implement `recurring_order_templates` for later use.
+- [X] Design and implement initial domain schema in `backend/database/models.py`.
+- [X] Create Alembic migrations for the first real schema.
+- [X] Stop relying on template `create_all()` as the main persistence path once migrations are stable.
+
+- [X] Implement `users`.
+- [X] Implement `customer_profiles`.
+- [X] Implement `driver_profiles`.
+- [X] Implement `admin_profiles` or admin role fields if a separate profile is unnecessary.
+- [X] Implement `regions`.
+- [X] Implement `delivery_slots`.
+- [X] Implement `region_driver_assignments`.
+- [X] Implement `grocery_items`.
+- [X] Implement `restaurants`.
+- [X] Implement `orders`.
+- [X] Implement `order_items`.
+- [X] Implement `complaints`.
+- [X] Implement `driver_ledger_entries`.
+- [X] Implement `proof_attachments`.
+- [X] Implement `recurring_order_templates` for later use.
 
 ## Phase 3: Authentication and RBAC
 
-- [ ] Expand auth beyond the current template user model into role-aware authentication.
+- [X] Expand auth beyond the current template user model into role-aware authentication.
 - [X] Implement customer signup.
-- [ ] Implement admin and driver account creation flows.
+- [X] Implement admin and driver account creation flows.
 - [X] Implement login, refresh token, logout, current user, change password, and deactivate endpoints.
 - [X] Implement role-based authorization helpers and route guards.
-- [ ] Add backend tests for auth success, failure, inactive users, and permissions.
-- [ ] Update frontend auth context to understand roles and redirect users to the correct area.
+- [X] Add backend tests for auth success, failure, inactive users, and permissions.
+- [X] Update frontend auth context to understand roles and redirect users to the correct area.
 
 ## Phase 4: Serviceability and Operational Setup APIs
 

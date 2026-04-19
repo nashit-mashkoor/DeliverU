@@ -30,7 +30,6 @@ htmlcov/
 
 # Environment
 .env
-.env.local
 .env.example
 
 # Backend specific
@@ -43,4 +42,3 @@ htmlcov/
 # Misc
 *.log
 .DS_Store
-

@@ -1,9 +1,9 @@
 [project]
-name = "app-backend"
+name = "deliveru-backend"
 version = "1.0.0"
-description = "A full-stack platform template with FastAPI and React"
+description = "DeliverU backend service"
 authors = [
-    {name = "Your Name"}
+    {name = "DeliverU Team"}
 ]
 requires-python = ">=3.12"
 

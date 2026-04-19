@@ -60,7 +60,7 @@ def get_secret(key: str, dev_default: str | None = None) -> str:
 # =============================================================================
 DATABASE_URL = os.environ.get(
     "DATABASE_URL",
-    "postgresql+asyncpg://root:password@pgbouncer:6432/deliveru"
+    "postgresql+asyncpg://root:password@127.0.0.1:5432/app"
 )
 
 # =============================================================================
@@ -74,7 +74,7 @@ REFRESH_TOKEN_EXPIRE_DAYS = int(os.environ.get("REFRESH_TOKEN_EXPIRE_DAYS", "120
 # =============================================================================
 # Redis Configuration
 # =============================================================================
-REDIS_HOST = os.environ.get("REDIS_HOST", "redis")
+REDIS_HOST = os.environ.get("REDIS_HOST", "127.0.0.1")
 REDIS_PORT = os.environ.get("REDIS_PORT", "6379")
 REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD", "")
 
@@ -87,7 +87,7 @@ else:
 # =============================================================================
 # MinIO Configuration
 # =============================================================================
-MINIO_ENDPOINT = os.environ.get("MINIO_ENDPOINT", "minio:9000")
+MINIO_ENDPOINT = os.environ.get("MINIO_ENDPOINT", "127.0.0.1:9000")
 MINIO_ACCESS_KEY = os.environ.get("MINIO_ACCESS_KEY", "minioadmin")
 MINIO_SECRET_KEY = os.environ.get("MINIO_SECRET_KEY", "minioadmin")
 MINIO_BUCKET_NAME = os.environ.get("MINIO_BUCKET_NAME", "uploads")

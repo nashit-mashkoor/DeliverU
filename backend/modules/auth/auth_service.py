@@ -4,8 +4,9 @@ from fastapi import HTTPException, status
 
 from backend.constants import ACCESS_TOKEN_EXPIRE_MINUTES
 from backend.database.crud import AsyncSessionLocal
-from backend.database.models import User
+from backend.database.models import User, UserRole
 from backend.modules.auth.auth_dto import (
+    AdminCreateUserRequest,
     ChangePasswordRequest,
     TokenResponse,
     UserLoginRequest,
@@ -28,14 +29,18 @@ class AuthenticationService:
         logger.info("Registering new user", extra={"email": request.email})
 
         try:
-            user = await AuthService.create_user(email=request.email, password=request.password)
+            user = await AuthService.create_user(
+                email=request.email,
+                password=request.password,
+                role=UserRole.CUSTOMER,
+            )
             logger.info("User registered successfully", extra={"user_id": user.id})
 
             return UserResponse(
                 uuid=user.uuid,
                 email=user.email,
                 is_active=user.is_active,
-                is_superuser=user.is_superuser,
+                role=user.role,
                 created_at=user.created_at,
                 updated_at=user.updated_at,
             )
@@ -65,6 +70,7 @@ class AuthenticationService:
             "sub": user.email,
             "user_id": user.id,
             "user_uuid": user.uuid,
+            "role": AuthService.get_role_value(user.role),
         }
 
         access_token = AuthService.create_access_token(
@@ -93,10 +99,31 @@ class AuthenticationService:
                 uuid=user.uuid,
                 email=user.email,
                 is_active=user.is_active,
-                is_superuser=user.is_superuser,
+                role=user.role,
                 created_at=user.created_at,
                 updated_at=user.updated_at,
             )
+
+    async def create_user_by_admin(self, request: AdminCreateUserRequest) -> UserResponse:
+        """Create a non-customer user account from admin flow."""
+        if request.role == UserRole.CUSTOMER:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Admin account creation endpoint only supports admin and driver roles",
+            )
+
+        try:
+            user = await AuthService.create_user(email=request.email, password=request.password, role=request.role)
+            return UserResponse(
+                uuid=user.uuid,
+                email=user.email,
+                is_active=user.is_active,
+                role=user.role,
+                created_at=user.created_at,
+                updated_at=user.updated_at,
+            )
+        except ValueError as e:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
     async def change_password(self, user_id: int, request: ChangePasswordRequest) -> dict:
         """Change user password"""
@@ -132,4 +159,3 @@ class AuthenticationService:
             await session.commit()
             logger.info("User deactivated", extra={"user_id": user_id})
             return {"message": "User account deactivated"}
-

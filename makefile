@@ -1,22 +1,21 @@
 # DeliverU Makefile
 
-.PHONY: infra infra-storage all down dev-backend dev-frontend migrate migration free-ports
+.PHONY: infra infra-storage all down dev-backend dev-frontend migrate migration seed test free-ports
 
 ENV_FILE ?= .env
-ENV_FILE_PATH := $(abspath $(ENV_FILE))
 FREE_PORTS ?= 8504 8503 5432 6379 9000 9001 6432
 
 infra:
-	docker compose --env-file $(ENV_FILE_PATH) --profile infra up -d
+	APP_ENV_FILE="$(ENV_FILE)" docker compose --env-file "$(ENV_FILE)" --profile infra up -d
 
 infra-storage:
-	docker compose --env-file $(ENV_FILE_PATH) --profile infra --profile storage up -d
+	APP_ENV_FILE="$(ENV_FILE)" docker compose --env-file "$(ENV_FILE)" --profile infra --profile storage up -d
 
 all:
-	docker compose --env-file $(ENV_FILE_PATH) --profile infra --profile storage --profile app --profile worker --profile web up -d --build
+	APP_ENV_FILE="$(ENV_FILE)" docker compose --env-file "$(ENV_FILE)" --profile infra --profile storage --profile app --profile worker --profile web up -d --build
 
 down:
-	docker compose --env-file $(ENV_FILE_PATH) down
+	APP_ENV_FILE="$(ENV_FILE)" docker compose --env-file "$(ENV_FILE)" down
 
 free-ports:
 	@docker stop deliveru-app deliveru-frontend deliveru-worker deliveru-pgbouncer deliveru-postgres deliveru-minio deliveru-redis 2>/dev/null || true
@@ -24,7 +23,7 @@ free-ports:
 
 dev-backend:
 	cd backend && \
-	set -a && . "$(ENV_FILE_PATH)" && set +a && \
+	set -a && . "../$(ENV_FILE)" && set +a && \
 	if [ "$$RUN_MIGRATIONS" = "1" ]; then \
 		PYTHONPATH=$${PYTHONPATH:-..} uv run alembic upgrade head; \
 	fi && \
@@ -32,15 +31,23 @@ dev-backend:
 
 migrate:
 	cd backend && \
-	set -a && . "$(ENV_FILE_PATH)" && set +a && \
+	set -a && . "../$(ENV_FILE)" && set +a && \
 	PYTHONPATH=$${PYTHONPATH:-..} uv run alembic upgrade head
 
 migration:
 	cd backend && \
-	set -a && . "$(ENV_FILE_PATH)" && set +a && \
+	set -a && . "../$(ENV_FILE)" && set +a && \
 	PYTHONPATH=$${PYTHONPATH:-..} uv run alembic revision --autogenerate -m "$(msg)"
+
+seed:
+	ENV_FILE="$(ENV_FILE)" ./scripts/seed.sh
+
+test:
+	cd backend && \
+	set -a && . "../$(ENV_FILE)" && set +a && \
+	PYTHONPATH=$${PYTHONPATH:-..} uv run pytest tests
 
 dev-frontend:
 	cd frontend && \
-	set -a && . "$(ENV_FILE_PATH)" && set +a && \
+	set -a && . "../$(ENV_FILE)" && set +a && \
 	npm run dev
