@@ -137,6 +137,49 @@ def test_auth_failure_and_inactive_user_blocked(client: TestClient) -> None:
     assert inactive_login_response.json()["detail"] == "User account is inactive"
 
 
+def test_logout_invalidates_access_and_refresh_tokens(client: TestClient) -> None:
+    email = _unique_email("logout")
+    password = "DeliverU123"
+
+    register_response = client.post(
+        f"{AUTH_BASE}/register",
+        json={
+            "email": email,
+            "password": password,
+            "password_confirm": password,
+        },
+    )
+    assert register_response.status_code == 201
+
+    login_response = client.post(
+        f"{AUTH_BASE}/login",
+        json={
+            "email": email,
+            "password": password,
+        },
+    )
+    assert login_response.status_code == 200
+    tokens = login_response.json()
+
+    logout_response = client.post(
+        f"{AUTH_BASE}/logout",
+        headers={"Authorization": f"Bearer {tokens['access_token']}"},
+    )
+    assert logout_response.status_code == 200
+
+    me_after_logout_response = client.get(
+        f"{AUTH_BASE}/me",
+        headers={"Authorization": f"Bearer {tokens['access_token']}"},
+    )
+    assert me_after_logout_response.status_code == 401
+
+    refresh_after_logout_response = client.post(
+        f"{AUTH_BASE}/refresh-token",
+        headers={"Authorization": f"Bearer {tokens['refresh_token']}"},
+    )
+    assert refresh_after_logout_response.status_code == 401
+
+
 def test_change_password_and_deactivate_flow(client: TestClient) -> None:
     email = _unique_email("change-pass")
     old_password = "DeliverU123"

@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, Optional
 
 from fastapi import Depends, HTTPException, Request, status
@@ -45,12 +45,13 @@ class AuthService:
     def create_access_token(data: Dict[str, Any], expires_delta: Optional[timedelta] = None) -> str:
         """Create a JWT access token"""
         to_encode = data.copy()
+        issued_at = datetime.utcnow()
         if expires_delta:
-            expire = datetime.utcnow() + expires_delta
+            expire = issued_at + expires_delta
         else:
-            expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+            expire = issued_at + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
 
-        to_encode.update({"exp": expire})
+        to_encode.update({"exp": expire, "iat": issued_at, "token_type": "access"})
         encoded_jwt = jwt.encode(to_encode, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
         return encoded_jwt
 
@@ -64,8 +65,9 @@ class AuthService:
     def create_refresh_token(data: Dict[str, Any]) -> str:
         """Create a JWT refresh token"""
         to_encode = data.copy()
-        expire = datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
-        to_encode.update({"exp": expire})
+        issued_at = datetime.utcnow()
+        expire = issued_at + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+        to_encode.update({"exp": expire, "iat": issued_at, "token_type": "refresh"})
         encoded_jwt = jwt.encode(to_encode, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
         return encoded_jwt
 
@@ -109,6 +111,53 @@ class AuthService:
             logger.info(f"Created new user: {email}")
             return user
 
+    @staticmethod
+    def _normalize_datetime(value: datetime) -> datetime:
+        """Normalize datetime to UTC-naive for consistent comparisons."""
+        if value.tzinfo is not None:
+            return value.astimezone(timezone.utc).replace(tzinfo=None)
+        return value
+
+    @staticmethod
+    def _parse_token_iat(payload: Dict[str, Any]) -> Optional[datetime]:
+        """Parse JWT iat claim into a UTC-naive datetime."""
+        token_iat = payload.get("iat")
+        if token_iat is None:
+            return None
+
+        if isinstance(token_iat, (int, float)):
+            return datetime.utcfromtimestamp(token_iat)
+
+        if isinstance(token_iat, str):
+            # python-jose can decode iat as string in some contexts
+            try:
+                return datetime.utcfromtimestamp(float(token_iat))
+            except ValueError:
+                return None
+
+        return None
+
+    @staticmethod
+    def is_token_invalidated(payload: Dict[str, Any], user: User) -> bool:
+        """Check whether token has been invalidated by user state changes (e.g. logout)."""
+        token_iat = AuthService._parse_token_iat(payload)
+        if token_iat is None:
+            return True
+
+        user_updated_at = AuthService._normalize_datetime(user.updated_at)
+        return int(token_iat.timestamp()) < int(user_updated_at.timestamp())
+
+    @staticmethod
+    async def invalidate_user_tokens(user_id: int) -> None:
+        """Invalidate all existing JWTs for a user by bumping updated_at."""
+        async with AsyncSessionLocal() as session:
+            user = await User.get_by_id(session, user_id)
+            if not user:
+                return
+
+            await User.update_by_id(session, user_id, updated_at=datetime.utcnow() + timedelta(seconds=1))
+            await session.commit()
+
 
 class JWTBearer(HTTPBearer):
     """JWT Bearer authentication dependency"""
@@ -134,6 +183,12 @@ class JWTBearer(HTTPBearer):
                 user = users[0]
                 if not user.is_active:
                     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Inactive user")
+
+                if AuthService.is_token_invalidated(payload, user):
+                    raise HTTPException(
+                        status_code=status.HTTP_401_UNAUTHORIZED,
+                        detail="Token has been invalidated. Please login again.",
+                    )
 
                 return {
                     "user_id": user.id,

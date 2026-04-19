@@ -12,6 +12,8 @@ from backend.modules.auth.auth_dto import (
     UserRegisterRequest,
     UserResponse,
 )
+from backend.database.crud import AsyncSessionLocal
+from backend.database.models import User
 from backend.modules.auth.auth_service import AuthenticationService
 from backend.services.auth import AuthService, JWTBearer, require_admin
 from backend.utils.logging import Logging
@@ -53,6 +55,24 @@ async def refresh_token(authorization: str = Header(...)) -> RefreshTokenRespons
         if not payload:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token")
 
+        if payload.get("token_type") != "refresh":
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token type")
+
+        async with AsyncSessionLocal() as session:
+            users = await User.filter(session, email=payload.get("sub"))
+            if not users:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+            user = users[0]
+            if not user.is_active:
+                raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User account is inactive")
+
+            if AuthService.is_token_invalidated(payload, user):
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Refresh token has been invalidated. Please login again.",
+                )
+
         access_token = AuthService.create_access_token(
             data={
                 "sub": payload.get("sub"),
@@ -89,7 +109,7 @@ async def change_password(request: ChangePasswordRequest, current_user: dict = D
 async def logout(current_user: dict = Depends(security)) -> Dict[str, str]:
     """Logout the current user."""
     logger.info("User logged out", extra={"user_id": current_user["user_id"]})
-    return {"message": "Logged out successfully"}
+    return await auth_service.logout_user(current_user["user_id"])
 
 
 @auth_router.post("/deactivate", response_model=Dict[str, str])

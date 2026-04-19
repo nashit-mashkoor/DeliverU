@@ -146,6 +146,12 @@ class AuthenticationService:
             logger.info("Password changed successfully", extra={"user_id": user_id})
             return {"message": "Password changed successfully"}
 
+    async def logout_user(self, user_id: int) -> dict:
+        """Logout user by invalidating existing tokens."""
+        logger.info("Logout request", extra={"user_id": user_id})
+        await AuthService.invalidate_user_tokens(user_id)
+        return {"message": "Logged out successfully"}
+
     async def deactivate_user(self, user_id: int) -> dict:
         """Deactivate a user account"""
         logger.info("Deactivating user", extra={"user_id": user_id})
